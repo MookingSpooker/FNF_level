@@ -1,0 +1,103 @@
+import flixel.FlxSprite;
+import funkin.Assets;
+import funkin.Paths;
+import funkin.Conductor;
+import funkin.Preferences;
+import funkin.play.stage.Stage;
+import haxe.Json;
+
+class EnergizeDynamoStage extends Stage
+{
+  function new()
+  {
+    super('dynamo');
+  }
+
+  var envelope:Dynamic;
+  var bars:Array<FlxSprite> = [];
+  var beams:Array<FlxSprite> = [];
+  var sparks:Array<FlxSprite> = [];
+  var ring:FlxSprite;
+  var echo:FlxSprite;
+
+  override function buildStage()
+  {
+    super.buildStage();
+    envelope = Json.parse(Assets.getText(Paths.json('energize-reactivity')));
+    bars = [];
+    beams = [];
+    sparks = [];
+    ring = getNamedProp('reactorRing');
+    echo = getNamedProp('reactorEcho');
+    for (i in 0...32)
+    {
+      var bar = getNamedProp('eq' + i);
+      bar.origin.set(7, 180);
+      bars.push(bar);
+    }
+    for (i in 0...4)
+    {
+      var beam = getNamedProp('beam' + i);
+      beam.origin.set(128, 768);
+      beams.push(beam);
+    }
+    for (i in 0...18) sparks.push(getNamedProp('spark' + i));
+    trace('ENERGIZE FX ready: audio envelope, reactor rings, 32 bars, 4 beams, 18 sparks.');
+  }
+
+  function sample(position:Float, band:Int):Float
+  {
+    if (envelope == null || position < 0) return 0;
+    var frame = position / envelope.sampleMs;
+    var index = Std.int(Math.floor(frame));
+    if (index < 0 || index >= envelope.frames.length - 1) return 0;
+    var fraction = frame - index;
+    return envelope.frames[index][band] * (1 - fraction) + envelope.frames[index + 1][band] * fraction;
+  }
+
+  override function onUpdate(event:UpdateScriptEvent):Void
+  {
+    super.onUpdate(event);
+    if (ring == null || envelope == null) return;
+    // All motion derives from the song clock: pause, seek and retry cannot accumulate drift.
+    var time = Conductor.instance.songPosition;
+    var seconds = Math.max(0, time) / 1000;
+    var beat = Math.max(0, time - 34) / 375;
+    var phase = beat - Math.floor(beat);
+    var bass = sample(time, 0);
+    var mid = sample(time, 1);
+    var high = sample(time, 2);
+    var level = sample(time, 3);
+    var drop = (time >= 25534 && time < 73534) || (time >= 103534 && time < 178534);
+    var intensity = drop ? 1.0 : 0.58;
+    var lights = Preferences.flashingLights ? 1.0 : 0.32;
+    var pulse = Preferences.flashingLights ? Math.pow(1 - phase, 3) * bass : 0.0;
+
+    ring.alpha = (0.12 + bass * 0.32 + pulse * 0.15) * lights;
+    ring.scale.set(1.12 + bass * 0.04 + pulse * 0.035, 1.12 + bass * 0.04 + pulse * 0.035);
+    var expansion = (beat / 4) - Math.floor(beat / 4);
+    echo.scale.set(1.12 + expansion * 0.65, 1.12 + expansion * 0.65);
+    echo.alpha = (1 - expansion) * level * 0.19 * intensity * lights;
+
+    for (i in 0...bars.length)
+    {
+      var band = i % 3;
+      var energy = band == 0 ? bass : (band == 1 ? mid : high);
+      var shape = 0.62 + 0.38 * Math.sin(i * 0.7 + beat * 0.35);
+      bars[i].scale.y = 0.08 + energy * shape * intensity;
+      bars[i].alpha = (0.18 + energy * 0.36) * lights;
+    }
+    for (i in 0...beams.length)
+    {
+      beams[i].angle = Math.sin(beat * Math.PI / 8 + i * 1.5) * (drop ? 24 : 13);
+      beams[i].alpha = (0.12 + level * 0.3 + pulse * 0.15) * intensity * lights;
+    }
+    for (i in 0...sparks.length)
+    {
+      var travel = (seconds * (0.13 + (i % 4) * 0.02) + i * 0.137) % 1;
+      sparks[i].x = 80 + i * 73 + Math.sin(beat * 0.3 + i) * 22;
+      sparks[i].y = 690 - travel * 780;
+      sparks[i].alpha = Math.sin(travel * Math.PI) * high * intensity * 0.55 * lights;
+    }
+  }
+}

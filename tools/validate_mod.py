@@ -4,6 +4,7 @@ import hashlib
 import json
 import subprocess
 import xml.etree.ElementTree as ET
+from collections import Counter
 import numpy as np
 from PIL import Image
 
@@ -32,6 +33,14 @@ assert level['songs']==['energize']
 assert meta['playData']['stage']=='dynamo'
 assert meta['playData']['characters']['opponent']=='volt'
 assert set(meta['playData']['difficulties'])==set(chart['notes'])
+advanced_meta=read(MOD/'data/songs/energize/energize-metadata-erect.json')
+advanced_chart=read(MOD/'data/songs/energize/energize-chart-erect.json')
+assert meta['playData']['songVariations']==['erect']
+assert set(advanced_meta['playData']['difficulties'])==set(advanced_chart['notes'])=={'erect','nightmare'}
+assert advanced_meta['playData']['characters']['instrumental']==''
+assert advanced_meta['timeChanges']==meta['timeChanges']
+assert advanced_meta['playData']['characters']['playerVocals']==[]
+assert advanced_meta['playData']['characters']['opponentVocals']==[]
 assert meta['playData']['characters']['playerVocals']==[]
 assert meta['playData']['characters']['opponentVocals']==[]
 image_path=MOD/'images/characters/volt.png'
@@ -48,7 +57,15 @@ assert len(names)==len(set(names))
 for animation in character['animations']:
     assert any(n.startswith(animation['prefix']) for n in names),animation['name']
 for prop in stage['props']:
-    assert (MOD/'images'/f"{prop['assetPath']}.png").exists()
+    if not prop['assetPath'].startswith('#'):
+        assert (MOD/'images'/f"{prop['assetPath']}.png").exists()
+    assert prop['zIndex']<100,'Stage effect would obscure the characters'
+envelope=read(MOD/'data/energize-reactivity.json')
+assert envelope['sampleMs']==40
+assert len(envelope['frames'])*40>=len(y)/22.05
+assert all(len(frame)==4 and all(0<=v<=1 for v in frame) for frame in envelope['frames'])
+assert np.std(np.array(envelope['frames']),axis=0).min()>.08,'Unresponsive visualizer channel'
+assert (MOD/'scripts/stages/dynamo.hxc').exists()
 assert Image.open(MOD/'images/icons/icon-volt.png').size==(300,150)
 assert (MOD/'images'/f"{level['titleAsset']}.png").exists()
 for role in ['bf','gf']:
@@ -57,7 +74,8 @@ features=np.load(ROOT/'analysis/features.npz')
 times=features['times'];strength=features['onset']
 peaks=times[(strength>np.roll(strength,1))&(strength>=np.roll(strength,-1))]-.006
 stats={}
-for difficulty,notes in chart['notes'].items():
+all_charts={**chart['notes'],**advanced_chart['notes']}
+for difficulty,notes in all_charts.items():
     assert notes==sorted(notes,key=lambda n:(n['t'],n['d']))
     assert len({(n['t'],n['d']) for n in notes})==len(notes),'Duplicate notes'
     assert all(0<=n['d']<8 and 0<n['t']<len(y)/22.05 and n['l']>=0 for n in notes)
@@ -69,10 +87,14 @@ for difficulty,notes in chart['notes'].items():
             assert a['t']+a['l']<b['t'],'Overlapping sustain and tap'
     for side in [0,1]:
         ns=[n for n in notes if n['d']//4==side]
-        assert all(b['t']-a['t']>=75 for a,b in zip(ns,ns[1:])), 'Unplayable attack density'
+        attacks=sorted(set(n['t'] for n in ns))
+        assert all(b-a>=75 for a,b in zip(attacks,attacks[1:])), 'Unplayable attack density'
+        assert max(Counter(n['t'] for n in ns).values())<=2,'Three/four-key chord introduced'
     errors=[float(min(abs(peaks-n['t']/1000))*1000) for n in notes]
     assert max(errors)<.01,'Note lost its matching acoustic attack'
     stats[difficulty]={'notes':len(notes),'max_attack_rounding_error_ms':max(errors)}
+player_counts=[sum(n['d']<4 for n in all_charts[d]) for d in ['easy','normal','hard','erect','nightmare']]
+assert player_counts==sorted(set(player_counts)),'Difficulty progression is not strictly increasing'
 result={'status':'PASS','audio_correlation':audio_correlation,
         'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
         'game_audio_sha256':hashlib.sha256(ogg.read_bytes()).hexdigest(),

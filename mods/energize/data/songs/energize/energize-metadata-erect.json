@@ -37,13 +37,10 @@
     }
   ],
   "playData": {
-    "songVariations": [
-      "erect"
-    ],
+    "songVariations": [],
     "difficulties": [
-      "easy",
-      "normal",
-      "hard"
+      "erect",
+      "nightmare"
     ],
     "characters": {
       "player": "bf",
@@ -51,14 +48,14 @@
       "opponent": "volt",
       "playerVocals": [],
       "opponentVocals": [],
-      "altInstrumentals": []
+      "altInstrumentals": [],
+      "instrumental": ""
     },
     "stage": "dynamo",
     "noteStyle": "funkin",
     "ratings": {
-      "easy": 3,
-      "normal": 7,
-      "hard": 10
+      "erect": 13,
+      "nightmare": 16
     },
     "album": "volume1",
     "previewStart": 0.27,

@@ -11,11 +11,19 @@
       "max_attack_rounding_error_ms": 0.0004988662283267331
     },
     "normal": {
-      "notes": 796,
+      "notes": 886,
       "max_attack_rounding_error_ms": 0.0004988662283267331
     },
     "hard": {
-      "notes": 1004,
+      "notes": 1179,
+      "max_attack_rounding_error_ms": 0.0004988662283267331
+    },
+    "erect": {
+      "notes": 1208,
+      "max_attack_rounding_error_ms": 0.0004988662283267331
+    },
+    "nightmare": {
+      "notes": 1653,
       "max_attack_rounding_error_ms": 0.0004988662283267331
     }
   },

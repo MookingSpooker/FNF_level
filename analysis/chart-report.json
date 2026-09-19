@@ -2,24 +2,50 @@
   "easy": {
     "player_notes": 215,
     "opponent_notes": 217,
+    "player_drop_notes": 151,
+    "two_note_chords": 0,
     "holds": 0,
     "peak_player_notes_in_1s": 3,
     "first_note_ms": 1526.517,
     "last_note_ms": 178166.517
   },
   "normal": {
-    "player_notes": 391,
-    "opponent_notes": 405,
+    "player_notes": 438,
+    "opponent_notes": 448,
+    "player_drop_notes": 314,
+    "two_note_chords": 0,
     "holds": 1,
-    "peak_player_notes_in_1s": 6,
+    "peak_player_notes_in_1s": 7,
     "first_note_ms": 1526.517,
     "last_note_ms": 178375.497
   },
   "hard": {
-    "player_notes": 494,
-    "opponent_notes": 510,
+    "player_notes": 591,
+    "opponent_notes": 588,
+    "player_drop_notes": 439,
+    "two_note_chords": 16,
     "holds": 0,
-    "peak_player_notes_in_1s": 9,
+    "peak_player_notes_in_1s": 11,
+    "first_note_ms": 1526.517,
+    "last_note_ms": 178375.497
+  },
+  "erect": {
+    "player_notes": 835,
+    "opponent_notes": 373,
+    "player_drop_notes": 679,
+    "two_note_chords": 41,
+    "holds": 0,
+    "peak_player_notes_in_1s": 12,
+    "first_note_ms": 1526.517,
+    "last_note_ms": 178375.497
+  },
+  "nightmare": {
+    "player_notes": 1153,
+    "opponent_notes": 500,
+    "player_drop_notes": 969,
+    "two_note_chords": 196,
+    "holds": 0,
+    "peak_player_notes_in_1s": 14,
     "first_note_ms": 1526.517,
     "last_note_ms": 178375.497
   },
@@ -30,5 +56,15 @@
   "grid_error_median_ms": 4.7335000000020955,
   "grid_error_p95_ms": 13.44100000000617,
   "grid_error_max_ms": 32.82299999999668,
-  "listening_review": "User played the native level and reported: Timing feels good. Also checked computationally against the actual game OGG."
+  "listening_review": "User confirmed timing of v1.0. The v1.1 charts preserve those attack timestamps; added notes use the same detector and leading-edge correction.",
+  "drop_windows_seconds": [
+    [
+      25.534,
+      73.534
+    ],
+    [
+      103.534,
+      178.534
+    ]
+  ]
 }

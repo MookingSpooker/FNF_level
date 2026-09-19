@@ -19,6 +19,1014 @@
         1
       ],
       "zIndex": 0
+    },
+    {
+      "name": "reactorRing",
+      "assetPath": "stages/dynamo-fx/ring",
+      "position": [
+        460,
+        5
+      ],
+      "scale": [
+        1.15,
+        1.15
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 10,
+      "alpha": 0.3
+    },
+    {
+      "name": "reactorEcho",
+      "assetPath": "stages/dynamo-fx/ring",
+      "position": [
+        460,
+        5
+      ],
+      "scale": [
+        1.15,
+        1.15
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 10,
+      "alpha": 0
+    },
+    {
+      "name": "beam0",
+      "assetPath": "stages/dynamo-fx/beam",
+      "position": [
+        -88,
+        -115
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 5,
+      "alpha": 0.1
+    },
+    {
+      "name": "beam1",
+      "assetPath": "stages/dynamo-fx/beam",
+      "position": [
+        242,
+        -115
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 5,
+      "alpha": 0.1
+    },
+    {
+      "name": "beam2",
+      "assetPath": "stages/dynamo-fx/beam",
+      "position": [
+        862,
+        -115
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 5,
+      "alpha": 0.1
+    },
+    {
+      "name": "beam3",
+      "assetPath": "stages/dynamo-fx/beam",
+      "position": [
+        1192,
+        -115
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 5,
+      "alpha": 0.1
+    },
+    {
+      "name": "eq0",
+      "assetPath": "#25EAFF",
+      "position": [
+        60,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq1",
+      "assetPath": "#25EAFF",
+      "position": [
+        101,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq2",
+      "assetPath": "#C8FF44",
+      "position": [
+        142,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq3",
+      "assetPath": "#C8FF44",
+      "position": [
+        183,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq4",
+      "assetPath": "#25EAFF",
+      "position": [
+        224,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq5",
+      "assetPath": "#25EAFF",
+      "position": [
+        265,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq6",
+      "assetPath": "#C8FF44",
+      "position": [
+        306,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq7",
+      "assetPath": "#C8FF44",
+      "position": [
+        347,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq8",
+      "assetPath": "#25EAFF",
+      "position": [
+        388,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq9",
+      "assetPath": "#25EAFF",
+      "position": [
+        429,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq10",
+      "assetPath": "#C8FF44",
+      "position": [
+        470,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq11",
+      "assetPath": "#C8FF44",
+      "position": [
+        511,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq12",
+      "assetPath": "#25EAFF",
+      "position": [
+        552,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq13",
+      "assetPath": "#25EAFF",
+      "position": [
+        593,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq14",
+      "assetPath": "#C8FF44",
+      "position": [
+        634,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq15",
+      "assetPath": "#C8FF44",
+      "position": [
+        675,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq16",
+      "assetPath": "#25EAFF",
+      "position": [
+        716,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq17",
+      "assetPath": "#25EAFF",
+      "position": [
+        757,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq18",
+      "assetPath": "#C8FF44",
+      "position": [
+        798,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq19",
+      "assetPath": "#C8FF44",
+      "position": [
+        839,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq20",
+      "assetPath": "#25EAFF",
+      "position": [
+        880,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq21",
+      "assetPath": "#25EAFF",
+      "position": [
+        921,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq22",
+      "assetPath": "#C8FF44",
+      "position": [
+        962,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq23",
+      "assetPath": "#C8FF44",
+      "position": [
+        1003,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq24",
+      "assetPath": "#25EAFF",
+      "position": [
+        1044,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq25",
+      "assetPath": "#25EAFF",
+      "position": [
+        1085,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq26",
+      "assetPath": "#C8FF44",
+      "position": [
+        1126,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq27",
+      "assetPath": "#C8FF44",
+      "position": [
+        1167,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq28",
+      "assetPath": "#25EAFF",
+      "position": [
+        1208,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq29",
+      "assetPath": "#25EAFF",
+      "position": [
+        1249,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq30",
+      "assetPath": "#C8FF44",
+      "position": [
+        1290,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "eq31",
+      "assetPath": "#C8FF44",
+      "position": [
+        1331,
+        620
+      ],
+      "scale": [
+        14,
+        180
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 8,
+      "alpha": 0.45
+    },
+    {
+      "name": "spark0",
+      "assetPath": "#45F4FF",
+      "position": [
+        80,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark1",
+      "assetPath": "#DBFF65",
+      "position": [
+        153,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark2",
+      "assetPath": "#45F4FF",
+      "position": [
+        226,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark3",
+      "assetPath": "#DBFF65",
+      "position": [
+        299,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark4",
+      "assetPath": "#45F4FF",
+      "position": [
+        372,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark5",
+      "assetPath": "#DBFF65",
+      "position": [
+        445,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark6",
+      "assetPath": "#45F4FF",
+      "position": [
+        518,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark7",
+      "assetPath": "#DBFF65",
+      "position": [
+        591,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark8",
+      "assetPath": "#45F4FF",
+      "position": [
+        664,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark9",
+      "assetPath": "#DBFF65",
+      "position": [
+        737,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark10",
+      "assetPath": "#45F4FF",
+      "position": [
+        810,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark11",
+      "assetPath": "#DBFF65",
+      "position": [
+        883,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark12",
+      "assetPath": "#45F4FF",
+      "position": [
+        956,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark13",
+      "assetPath": "#DBFF65",
+      "position": [
+        1029,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark14",
+      "assetPath": "#45F4FF",
+      "position": [
+        1102,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark15",
+      "assetPath": "#DBFF65",
+      "position": [
+        1175,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark16",
+      "assetPath": "#45F4FF",
+      "position": [
+        1248,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
+    },
+    {
+      "name": "spark17",
+      "assetPath": "#DBFF65",
+      "position": [
+        1321,
+        500
+      ],
+      "scale": [
+        3,
+        10
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 12,
+      "alpha": 0
     }
   ],
   "characters": {

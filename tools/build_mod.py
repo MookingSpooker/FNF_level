@@ -3,8 +3,11 @@ from pathlib import Path
 import json
 import shutil
 import xml.etree.ElementTree as ET
+from copy import deepcopy
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
+from chart_patterns import arrange, chart_stats, in_drop
+from build_effects import build_effects
 
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'mods/energize'
@@ -84,10 +87,10 @@ def artwork():
 
 def static_data():
     write_json(MOD/'_polymod_meta.json',{
-        'id':'energize-volt','title':'ENERGIZE: VS VOLT','description':'Battle VOLT at The Dynamo. Energize by Tonytonychopper999. Three beat-matched charts, original art, classic FNF gameplay.',
+        'id':'energize-volt','title':'ENERGIZE: VS VOLT','description':'Battle VOLT at The Dynamo. Five difficulties, stronger drops and an audio-reactive reactor stage. Music by Tonytonychopper999.',
         'contributors':[{'name':'Tonytonychopper999','role':'Music (user-supplied track)'},
                         {'name':'Leane + Codex','role':'Mod concept, chart, integration and artwork'}],
-        'api_version':'0.8.4','mod_version':'1.0.0','license':'See CREDITS.md'})
+        'api_version':'0.8.4','mod_version':'1.1.0','license':'See CREDITS.md'})
     animations=[{'name':name,'prefix':prefix,'frameRate':24,'looped':False}
                 for name,prefix in [('idle','idle'),('danceLeft','idle'),('danceRight','cheer'),
                                     ('singLEFT','left'),('singDOWN','down'),('singUP','up'),('singRIGHT','right'),('cheer','cheer')]]
@@ -98,7 +101,7 @@ def static_data():
     write_json(MOD/'data/stages/dynamo.json',{
         'version':'1.0.1','name':'The Dynamo','cameraZoom':0.8,
         'props':[{'name':'dynamo','assetPath':'stages/dynamo','position':[-320,-270],
-                  'scale':[1.35,1.35],'scroll':[1,1],'zIndex':0}],
+                  'scale':[1.35,1.35],'scroll':[1,1],'zIndex':0}]+build_effects(),
         'characters':{'bf':{'zIndex':300,'position':[1090,875],'cameraOffsets':[-210,-70]},
                       'dad':{'zIndex':200,'position':[290,875],'cameraOffsets':[210,-40]},
                       'gf':{'zIndex':100,'position':[700,760],'cameraOffsets':[0,0],'scale':0.85}}})
@@ -110,16 +113,23 @@ def static_data():
                  {'assetPath':'storymenu/props/bf','scale':1,'offsets':[150,80],
                   'animations':[{'name':'idle','prefix':'idle0','frameRate':24},
                                 {'name':'confirm','prefix':'confirm0','frameRate':24}]}]})
-    write_json(MOD/'data/songs/energize/energize-metadata.json',{
+    metadata={
         'version':'2.2.4','songName':'Energize','artist':'Tonytonychopper999','charter':'Leane + Codex',
-        'timeFormat':'ms','offsets':{'instrumental':0},'generatedBy':'ENERGIZE chart builder 1.0',
+        'timeFormat':'ms','offsets':{'instrumental':0},'generatedBy':'ENERGIZE chart builder 1.1',
         'timeChanges':[{'t':0,'b':0,'bpm':BPM,'n':4,'d':4,'bt':[4,4,4,4]},
                        {'t':OFFSET*1000,'b':0,'bpm':BPM,'n':4,'d':4,'bt':[4,4,4,4]}],
-        'playData':{'songVariations':[],'difficulties':['easy','normal','hard'],
+        'playData':{'songVariations':['erect'],'difficulties':['easy','normal','hard'],
                     'characters':{'player':'bf','girlfriend':'gf','opponent':'volt',
                                   'playerVocals':[],'opponentVocals':[],'altInstrumentals':[]},
-                    'stage':'dynamo','noteStyle':'funkin','ratings':{'easy':3,'normal':6,'hard':9},
-                    'album':'volume1','previewStart':0.27,'previewEnd':0.39}})
+                    'stage':'dynamo','noteStyle':'funkin','ratings':{'easy':3,'normal':7,'hard':10},
+                    'album':'volume1','previewStart':0.27,'previewEnd':0.39}}
+    write_json(MOD/'data/songs/energize/energize-metadata.json',metadata)
+    advanced=deepcopy(metadata)
+    advanced['playData'].update({'songVariations':[],'difficulties':['erect','nightmare'],
+                                 'ratings':{'erect':13,'nightmare':16}})
+    # Same supplied recording in both variations; do not request a nonexistent remix.
+    advanced['playData']['characters']['instrumental']=''
+    write_json(MOD/'data/songs/energize/energize-metadata-erect.json',advanced)
 
 def charts():
     z=np.load(ROOT/'analysis/features.npz');times=z['times'];strength=z['onset'];rms=z['rms']
@@ -177,20 +187,30 @@ def charts():
                               'holds':sum(n['l']>0 for n in player),
                               'peak_player_notes_in_1s':max(sum(x['t']>=n['t'] and x['t']<n['t']+1000 for x in player) for n in player),
                               'first_note_ms':notes[0]['t'],'last_note_ms':notes[-1]['t']}
+    charts=arrange(charts,candidates)
+    evidence={difficulty:chart_stats(notes) for difficulty,notes in charts.items()}
     events=[{'t':0,'e':'FocusCamera','v':{'char':-1,'x':690,'y':530,'duration':0,'ease':'INSTANT'}}]
     for phrase in range(59):
         t=(OFFSET+(4+phrase*8)*BEAT)*1000
-        events.append({'t':round(t,3),'e':'FocusCamera','v':{'char':1 if phrase%2==0 else 0,'duration':4,'ease':'CLASSIC'}})
+        focus={'char':-1,'x':690,'y':530,'duration':4,'ease':'CLASSIC'} if in_drop((4+phrase*8)*4) else {
+            'char':1 if phrase%2==0 else 0,'duration':4,'ease':'CLASSIC'}
+        events.append({'t':round(t,3),'e':'FocusCamera','v':focus})
     events.append({'t':179000,'e':'PlayAnimation','v':{'target':'dad','anim':'cheer','force':True}})
     write_json(MOD/'data/songs/energize/energize-chart.json',{'version':'2.0.0',
-               'scrollSpeed':{'easy':1.5,'normal':2.0,'hard':2.5},'events':events,'notes':charts,
-               'generatedBy':'ENERGIZE chart builder 1.0'})
+               'scrollSpeed':{'easy':1.5,'normal':2.0,'hard':2.5},'events':events,
+               'notes':{k:charts[k] for k in ['easy','normal','hard']},
+               'generatedBy':'ENERGIZE chart builder 1.1'})
+    write_json(MOD/'data/songs/energize/energize-chart-erect.json',{'version':'2.0.0',
+               'scrollSpeed':{'erect':2.8,'nightmare':3.1},'events':events,
+               'notes':{k:charts[k] for k in ['erect','nightmare']},
+               'generatedBy':'ENERGIZE chart builder 1.1'})
     errors=np.array([abs(c['t']-c['grid']) for c in all_attacks])
     evidence.update({'bpm':BPM,'grid_offset_ms':OFFSET*1000,'duration_seconds':187.570794,
         'method':'Band-weighted spectral-flux attacks near a 160 BPM sixteenth grid; six-millisecond leading-edge correction; authored lane motifs and alternating eight-beat phrases.',
         'grid_error_median_ms':float(np.median(errors)),'grid_error_p95_ms':float(np.percentile(errors,95)),
         'grid_error_max_ms':float(max(errors)),
-        'listening_review':'User played the native level and reported: Timing feels good. Also checked computationally against the actual game OGG.'})
+        'listening_review':'User confirmed timing of v1.0. The v1.1 charts preserve those attack timestamps; added notes use the same detector and leading-edge correction.',
+        'drop_windows_seconds':[[25.534,73.534],[103.534,178.534]]})
     write_json(ROOT/'analysis/chart-report.json',evidence)
     print(json.dumps(evidence,indent=2))
 
