@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "audio_correlation": 0.9986764799753874,
+  "source_sha256": "ae4eeae5956bc5f0c1e4d3bb21cc840ba4fa76fb6fa6fb2ecf78604c2c592603",
+  "game_audio_sha256": "845d431e4b5a70557278285b7ff4dd9f1873b0a04ff9425bdfc23715e3ddeb41",
+  "duration_seconds": 187.57079365079366,
+  "atlas_frames": 36,
+  "charts": {
+    "easy": {
+      "notes": 432,
+      "max_attack_rounding_error_ms": 0.0004988662283267331
+    },
+    "normal": {
+      "notes": 796,
+      "max_attack_rounding_error_ms": 0.0004988662283267331
+    },
+    "hard": {
+      "notes": 1004,
+      "max_attack_rounding_error_ms": 0.0004988662283267331
+    }
+  },
+  "checks": [
+    "Exact supplied recording, unchanged length",
+    "All required assets resolve",
+    "All atlas rectangles in bounds",
+    "No duplicate or out-of-range notes",
+    "No sustain collisions or rapid same-lane repeats",
+    "Every note matches a detected acoustic attack"
+  ]
+}

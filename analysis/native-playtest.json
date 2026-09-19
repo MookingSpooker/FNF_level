@@ -1,0 +1,18 @@
+{
+  "engine": "Friday Night Funkin' 0.8.4 Windows 64-bit",
+  "mod": "ENERGIZE: VS VOLT 1.0.0",
+  "result": "PASS",
+  "observed": [
+    "Polymod loaded ENERGIZE successfully",
+    "Native registries loaded the song, story level and VOLT character",
+    "The Dynamo background, transparent VOLT poses, Boyfriend, Girlfriend and health icon rendered in gameplay",
+    "Player inputs registered and scored normally",
+    "Hard difficulty played through the complete song and reached the native results screen",
+    "Final installed files matched the project files"
+  ],
+  "user_timing_feedback": "Timing feels good",
+  "limits": [
+    "Easy and Normal received automated chart checks, not separate complete native playthroughs",
+    "Final Freeplay icon and mod badge were checked as files and installed after the running game had cached its menu assets"
+  ]
+}

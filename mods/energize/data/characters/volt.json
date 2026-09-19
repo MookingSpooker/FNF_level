@@ -1,0 +1,72 @@
+{
+  "version": "1.0.0",
+  "name": "VOLT",
+  "renderType": "sparrow",
+  "assetPath": "characters/volt",
+  "scale": 1.0,
+  "singTime": 4,
+  "danceEvery": 1,
+  "startingAnimation": "idle",
+  "isPixel": false,
+  "healthIcon": {
+    "id": "volt"
+  },
+  "offsets": [
+    0,
+    0
+  ],
+  "cameraOffsets": [
+    0,
+    -30
+  ],
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "idle",
+      "frameRate": 24,
+      "looped": false
+    },
+    {
+      "name": "danceLeft",
+      "prefix": "idle",
+      "frameRate": 24,
+      "looped": false
+    },
+    {
+      "name": "danceRight",
+      "prefix": "cheer",
+      "frameRate": 24,
+      "looped": false
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "left",
+      "frameRate": 24,
+      "looped": false
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "down",
+      "frameRate": 24,
+      "looped": false
+    },
+    {
+      "name": "singUP",
+      "prefix": "up",
+      "frameRate": 24,
+      "looped": false
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "right",
+      "frameRate": 24,
+      "looped": false
+    },
+    {
+      "name": "cheer",
+      "prefix": "cheer",
+      "frameRate": 24,
+      "looped": false
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "version": "1.0.1",
+  "name": "The Dynamo",
+  "cameraZoom": 0.8,
+  "props": [
+    {
+      "name": "dynamo",
+      "assetPath": "stages/dynamo",
+      "position": [
+        -320,
+        -270
+      ],
+      "scale": [
+        1.35,
+        1.35
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 0
+    }
+  ],
+  "characters": {
+    "bf": {
+      "zIndex": 300,
+      "position": [
+        1090,
+        875
+      ],
+      "cameraOffsets": [
+        -210,
+        -70
+      ]
+    },
+    "dad": {
+      "zIndex": 200,
+      "position": [
+        290,
+        875
+      ],
+      "cameraOffsets": [
+        210,
+        -40
+      ]
+    },
+    "gf": {
+      "zIndex": 100,
+      "position": [
+        700,
+        760
+      ],
+      "cameraOffsets": [
+        0,
+        0
+      ],
+      "scale": 0.85
+    }
+  }
+}

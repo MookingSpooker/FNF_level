@@ -1,0 +1,51 @@
+{
+  "version": "1.0.0",
+  "name": "ENERGIZE: VS VOLT",
+  "titleAsset": "storymenu/titles/energize",
+  "background": "#231740",
+  "songs": [
+    "energize"
+  ],
+  "visible": true,
+  "capsule": {
+    "name": "VOLT"
+  },
+  "props": [
+    {
+      "assetPath": "characters/volt",
+      "scale": 0.65,
+      "offsets": [
+        65,
+        35
+      ],
+      "animations": [
+        {
+          "name": "idle",
+          "prefix": "idle",
+          "frameRate": 18,
+          "looped": true
+        }
+      ]
+    },
+    {
+      "assetPath": "storymenu/props/bf",
+      "scale": 1,
+      "offsets": [
+        150,
+        80
+      ],
+      "animations": [
+        {
+          "name": "idle",
+          "prefix": "idle0",
+          "frameRate": 24
+        },
+        {
+          "name": "confirm",
+          "prefix": "confirm0",
+          "frameRate": 24
+        }
+      ]
+    }
+  ]
+}

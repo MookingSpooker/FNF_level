@@ -1,0 +1,18 @@
+{
+  "id": "energize-volt",
+  "title": "ENERGIZE: VS VOLT",
+  "description": "Battle VOLT at The Dynamo. Energize by Tonytonychopper999. Three beat-matched charts, original art, classic FNF gameplay.",
+  "contributors": [
+    {
+      "name": "Tonytonychopper999",
+      "role": "Music (user-supplied track)"
+    },
+    {
+      "name": "Leane + Codex",
+      "role": "Mod concept, chart, integration and artwork"
+    }
+  ],
+  "api_version": "0.8.4",
+  "mod_version": "1.0.0",
+  "license": "See CREDITS.md"
+}

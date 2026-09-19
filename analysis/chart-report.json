@@ -1,0 +1,34 @@
+{
+  "easy": {
+    "player_notes": 215,
+    "opponent_notes": 217,
+    "holds": 0,
+    "peak_player_notes_in_1s": 3,
+    "first_note_ms": 1526.517,
+    "last_note_ms": 178166.517
+  },
+  "normal": {
+    "player_notes": 391,
+    "opponent_notes": 405,
+    "holds": 1,
+    "peak_player_notes_in_1s": 6,
+    "first_note_ms": 1526.517,
+    "last_note_ms": 178375.497
+  },
+  "hard": {
+    "player_notes": 494,
+    "opponent_notes": 510,
+    "holds": 0,
+    "peak_player_notes_in_1s": 9,
+    "first_note_ms": 1526.517,
+    "last_note_ms": 178375.497
+  },
+  "bpm": 160,
+  "grid_offset_ms": 34.0,
+  "duration_seconds": 187.570794,
+  "method": "Band-weighted spectral-flux attacks near a 160 BPM sixteenth grid; six-millisecond leading-edge correction; authored lane motifs and alternating eight-beat phrases.",
+  "grid_error_median_ms": 4.7335000000020955,
+  "grid_error_p95_ms": 13.44100000000617,
+  "grid_error_max_ms": 32.82299999999668,
+  "listening_review": "User played the native level and reported: Timing feels good. Also checked computationally against the actual game OGG."
+}

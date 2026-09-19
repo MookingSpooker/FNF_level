@@ -1,0 +1,8 @@
+/game/
+/analysis/*.wav
+/analysis/*.npz
+/research/source/
+/dist/
+/backups/
+__pycache__/
+*.log
