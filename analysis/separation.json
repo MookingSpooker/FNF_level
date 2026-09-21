@@ -1,0 +1,13 @@
+{
+  "model": "htdemucs",
+  "sources": [
+    "drums",
+    "bass",
+    "other",
+    "vocals"
+  ],
+  "sample_rate": 44100,
+  "samples": 8271872,
+  "duration_seconds": 187.57079365079366,
+  "note": "Estimated stems for analysis only. No trimming, stem normalization or game-audio replacement."
+}

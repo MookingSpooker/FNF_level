@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
+from musical_chart import sections
 
 ROOT=Path(__file__).resolve().parents[1]
 MOD=ROOT/'mods/energize'
@@ -13,6 +14,17 @@ def build_effects():
     for inset,alpha,width in [(19,25,15),(23,60,7),(26,220,3),(45,55,2)]:
         draw.ellipse((inset,inset,512-inset,512-inset),outline=(42,241,255,alpha),width=width)
     ring.save(folder/'ring.png')
+    core=Image.new('RGBA',(512,512));draw=ImageDraw.Draw(core)
+    for radius in [155,205,237]:
+        for start in range(0,360,45):
+            draw.arc((256-radius,256-radius,256+radius,256+radius),start,start+28,
+                     fill=(222,255,120,210),width=5 if radius==205 else 2)
+    core.save(folder/'core.png')
+    bolt=Image.new('RGBA',(160,768));draw=ImageDraw.Draw(bolt)
+    points=[(85,0),(42,127),(106,206),(54,329),(115,417),(48,534),(100,639),(77,768)]
+    for width,color in [(22,(128,67,255,30)),(10,(125,90,255,120)),(3,(230,248,255,240))]:
+        draw.line(points,fill=color,width=width)
+    bolt.save(folder/'bolt.png')
     # Simple transparent light-cone geometry; no change to the painted backdrop.
     beam=Image.new('RGBA',(256,768));draw=ImageDraw.Draw(beam)
     for y in range(768):
@@ -20,10 +32,10 @@ def build_effects():
         alpha=int(90*(.4+.6*y/768))
         draw.line((128-half,y,128+half,y),fill=(82,225,255,alpha),width=1)
     beam.save(folder/'beam.png')
-    z=np.load(ROOT/'analysis/features.npz')
-    t=z['times'];freq=z['freq'];spec=z['spec']
-    bands=[np.sqrt((spec[:,(freq>=lo)&(freq<hi)]**2).mean(axis=1))
-           for lo,hi in [(40,180),(180,1800),(1800,10000)]]+[z['rms']]
+    z=np.load(ROOT/'analysis/parts-features.npz')
+    t=z['times']
+    bands=[z['bass_rms'],z['lead_rms'],z['drums_rms'],
+           (z['bass_rms']+z['lead_rms']+z['drums_rms'])/3]
     sample_t=np.arange(0,187.6,.04)
     normalized=[]
     for values in bands:
@@ -32,13 +44,22 @@ def build_effects():
         values=np.convolve(values,np.ones(7)/7,mode='same')
         normalized.append(np.interp(sample_t,t,values))
     frames=np.round(np.array(normalized).T,3).tolist()
-    (MOD/'data/energize-reactivity.json').write_text(json.dumps({'sampleMs':40,'frames':frames},separators=(',',':')))
+    offset=json.loads((ROOT/'analysis/parts.json').read_text())['offset_ms']
+    (MOD/'data/energize-reactivity.json').write_text(json.dumps({'sampleMs':40,'offsetMs':offset,
+        'channels':['bass','lead','drums','level'],'sections':sections(offset),'frames':frames},separators=(',',':')))
     props=[]
     def prop(name,path,x,y,scale,alpha,z=10):
         props.append({'name':name,'assetPath':path,'position':[x,y],'scale':scale,
                       'scroll':[1,1],'zIndex':z,'alpha':alpha})
     prop('reactorRing','stages/dynamo-fx/ring',460,5,[1.15,1.15],.3)
     prop('reactorEcho','stages/dynamo-fx/ring',460,5,[1.15,1.15],0)
+    prop('reactorCore','stages/dynamo-fx/core',460,5,[1.15,1.15],.6,11)
+    prop('wash','#7951DA',-320,-270,[2074,1382],0,1)
+    for i,x in enumerate([290,1090]):
+        prop(f'halo{i}','stages/dynamo-fx/ring',x-256,335,[.95,.95],.25,16)
+        prop(f'floor{i}','stages/dynamo-fx/core',x-256,565,[1.05,.32],.35,15)
+    for i,x in enumerate([65,400,945,1340]):
+        prop(f'bolt{i}','stages/dynamo-fx/bolt',x-80,-70,[1,1],0,14)
     for i,x in enumerate([40,370,990,1320]):
         prop(f'beam{i}','stages/dynamo-fx/beam',x-128,-115,[1,1],.1,5)
     for i in range(32):

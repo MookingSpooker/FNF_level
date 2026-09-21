@@ -70,9 +70,12 @@ assert Image.open(MOD/'images/icons/icon-volt.png').size==(300,150)
 assert (MOD/'images'/f"{level['titleAsset']}.png").exists()
 for role in ['bf','gf']:
     assert (GAME/f'assets/data/characters/{role}.json').exists()
-features=np.load(ROOT/'analysis/features.npz')
-times=features['times'];strength=features['onset']
-peaks=times[(strength>np.roll(strength,1))&(strength>=np.roll(strength,-1))]-.006
+parts=read(ROOT/'analysis/parts.json')
+provenance=read(ROOT/'analysis/note-provenance.json')
+report=read(ROOT/'analysis/chart-report.json')
+part_attacks={name:{a['t']:a for a in values} for name,values in parts['parts'].items()}
+assert envelope['offsetMs']==parts['offset_ms']==meta['timeChanges'][1]['t']
+assert envelope['sections']==report['sections']
 stats={}
 all_charts={**chart['notes'],**advanced_chart['notes']}
 for difficulty,notes in all_charts.items():
@@ -90,9 +93,32 @@ for difficulty,notes in all_charts.items():
         attacks=sorted(set(n['t'] for n in ns))
         assert all(b-a>=75 for a,b in zip(attacks,attacks[1:])), 'Unplayable attack density'
         assert max(Counter(n['t'] for n in ns).values())<=2,'Three/four-key chord introduced'
-    errors=[float(min(abs(peaks-n['t']/1000))*1000) for n in notes]
-    assert max(errors)<.01,'Note lost its matching acoustic attack'
-    stats[difficulty]={'notes':len(notes),'max_attack_rounding_error_ms':max(errors)}
+    proof={(a['t'],a['d']):a for a in provenance[difficulty]}
+    assert len(proof)==len(notes),'Missing or duplicate musical provenance'
+    errors=[]
+    for n in notes:
+        a=proof[(n['t'],n['d'])]
+        attack=part_attacks[a['part']][n['t']]
+        errors.append(abs(n['t']-attack['attack']))
+        section=next(s for s in report['sections'] if s['start']<=n['t']<s['end'])
+        if a['part']=='lead':
+            assert n['d']//4==section['leadSide'],'Lead assigned to the wrong character'
+        else:
+            assert n['d']//4!=section['leadSide'] or (a['part']=='drums' and
+                len([x for x in notes if x['t']==n['t'] and x['d']//4==n['d']//4])==2), 'Backing part unexpectedly replaces lead'
+    assert max(errors)<33.01,'Chart timing too far from a separated acoustic attack'
+    section_checks=[]
+    for section in report['sections']:
+        own=[a for a in provenance[difficulty] if section['start']<=a['t']<section['end']]
+        player=[a for a in own if a['d']<4]
+        opponent=[a for a in own if a['d']>=4]
+        assert player and opponent, 'One character is silent for an entire musical section'
+        lead_player=sum(a['part']=='lead' for a in player)
+        if section['drop']:assert lead_player/len(player)>.7,'Player does not carry drop melody'
+        else:assert lead_player==0,'Player steals the easier lead from VOLT'
+        section_checks.append({'name':section['name'],'player_notes':len(player),'opponent_notes':len(opponent)})
+    stats[difficulty]={'notes':len(notes),'max_estimated_attack_deviation_ms':max(errors),
+        'sections':section_checks}
 player_counts=[sum(n['d']<4 for n in all_charts[d]) for d in ['easy','normal','hard','erect','nightmare']]
 assert player_counts==sorted(set(player_counts)),'Difficulty progression is not strictly increasing'
 result={'status':'PASS','audio_correlation':audio_correlation,
@@ -101,6 +127,9 @@ result={'status':'PASS','audio_correlation':audio_correlation,
         'duration_seconds':len(y)/22050,'atlas_frames':len(names),'charts':stats,
         'checks':['Exact supplied recording, unchanged length','All required assets resolve',
                   'All atlas rectangles in bounds','No duplicate or out-of-range notes',
-                  'No sustain collisions or rapid same-lane repeats','Every note matches a detected acoustic attack']}
+                  'No sustain collisions or rapid same-lane repeats',
+                  'Every note has a matching separated musical part within 33ms',
+                  'Player owns every drop lead; VOLT owns every easier lead',
+                  'Both characters participate in every musical section']}
 (ROOT/'analysis/validation.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))

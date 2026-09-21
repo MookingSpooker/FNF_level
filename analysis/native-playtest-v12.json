@@ -1,0 +1,27 @@
+{
+  "version": "1.2.0",
+  "engine": "0.8.4",
+  "date": "2026-09-21",
+  "status": "PASS",
+  "mode": "Native Chart Editor full-stage bot play",
+  "full_song_difficulty": "nightmare",
+  "variation": "erect",
+  "duration_seconds": 187.57079365,
+  "observations": [
+    "All five difficulties visible in native editor",
+    "Nightmare selected and played from the beginning through the tail, returning automatically to the editor",
+    "VOLT, Boyfriend and Girlfriend remain visible; different note streams run simultaneously",
+    "Reactor segments, halos and stage lighting visible in gameplay snapshots",
+    "Sampled gameplay screenshots show 60 FPS; this is not a frame-time benchmark",
+    "Final cheer event at 179 seconds executed; no stage-script, asset or camera-ease errors found"
+  ],
+  "fix_verified": "Removed repeated setScale calls that accumulated Boyfriend global offsets during the first test",
+  "log_note": "Native engine emitted one Normal Conductor Update warning during the ending transition",
+  "limits": [
+    "Bot play verifies runtime integration, not subjective timing feel or human difficulty",
+    "Flashing Lights fallback is implemented and inspected in code; not toggled in the native playtest"
+  ],
+  "installed_and_zip_match": true,
+  "verified_mod_files": 23,
+  "stage_script_sha256": "780cf78be8a8c1b00cef562965a39aefcdb846fd73f8bd880cf95535c92cfd12"
+}

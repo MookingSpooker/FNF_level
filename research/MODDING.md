@@ -25,12 +25,31 @@ The user's supplied `CHANGELOG.md` and the running game identify version **0.8.4
 - Register a Story Mode level so the song also appears in Freeplay.
 - Explicitly set both vocal lists to empty. The provided full mix is the instrumental playback track; duplicate vocal copies would double the volume.
 - Keep image PNGs unchanged and define the six poses and subtle movement through Sparrow XML frame rectangles and offsets. The atlas contains 36 references to six illustrated poses, not 36 separately drawn images.
-- Preserve the original mechanics using data only: no gameplay scripts, note penalties, new input rules, or engine patches.
+- Preserve the original mechanics. The stage HScript changes visual props and character angles only; it adds no input rules, scoring changes, or engine patches.
 
-## Timing evidence
+## Musical arrangement and timing (1.2)
 
-The audio was decoded from the actual shipped OGG at 22,050 Hz. Analysis uses a 1,024-sample Hann window with a 128-sample hop and positive log-spectral differences across four frequency bands. The strong eighth-note periodicity at 320 pulses/minute supports a 160 BPM chart. Broader harmonic estimates initially suggested other tempi; section-level analysis resolved these as syncopation rather than a tempo change.
+Research informed a separation-first approach: estimate drums, bass, other instruments, and vocals locally; combine the latter two into a lead-oriented signal. These are imperfect model estimates, not original studio stems. The exact existing `Inst.ogg` remains the playback source.
 
-Candidate attacks must fall within 36 ms of the sixteenth-note grid. The chosen timestamp receives a 6 ms correction for the spectral window's leading-edge delay. Difficulty-specific density limits and repeating authored direction motifs produce readable patterns. The player's actual playtest confirmed that timing feels good.
+- [Demucs, official repository and inference instructions](https://github.com/facebookresearch/demucs)
+- [librosa: onset backtracking to energy minima](https://librosa.org/doc/0.11.0/generated/librosa.onset.onset_backtrack.html)
+- [librosa: spectral pitch tracking](https://librosa.org/doc/0.11.0/generated/librosa.piptrack.html)
+- [librosa: harmonic/percussive separation concepts](https://librosa.org/doc/main/auto_tutorials/03-advanced/plot_hprss.html)
 
-This is audio-assisted charting, not a transcription from MIDI or isolated stems. Hardware latency can still be adjusted using the game's normal timing settings.
+`htdemucs` runs locally with zero random shifts and 25% overlap. Stems preserve the decoded recording’s sample count and timeline. No song upload is involved. A 1,024-sample centered STFT with 110-sample hops at 22,050 Hz measures separate attacks. Backtracking is bounded to four frames, then refined by the flux half-rise so a sustained pad cannot push a timestamp into the previous note. A circular fit to strong drum attacks establishes a 36.25 ms phase at 160 BPM. Chart timestamps use the stable sixteenth grid; an estimated attack must lie within 33 ms. These numerical bounds measure detector agreement, not human perception.
+
+The old full-mix attack stream and fixed eight-beat turn switching are no longer used. Authored sections keep the player on lead in drops and VOLT on lead in simpler passages. The other character plays independently selected bass and drum accents. Four pitch registers guide lead direction; fast repeated pitches alternate fingers. Doubles require a simultaneous lead and drum accent. The source of every note is recorded in `analysis/note-provenance.json`.
+
+## Difficulties and reactive visuals
+
+- [Official variation documentation](https://funkincrew.github.io/funkin-modding-docs/02-custom-songs-and-custom-levels/02-04-what-are-variations.html)
+- [Version-pinned instrumental selection](https://github.com/FunkinCrew/Funkin/blob/v0.8.4/source/funkin/play/song/Song.hx)
+- [Stage script callbacks and character access](https://github.com/FunkinCrew/Funkin/blob/v0.8.4/source/funkin/play/stage/Stage.hx)
+- [Character animation and scale behavior](https://github.com/FunkinCrew/Funkin/blob/v0.8.4/source/funkin/play/character/BaseCharacter.hx)
+- [Camera zoom event parameters](https://github.com/FunkinCrew/Funkin/blob/v0.8.4/source/funkin/play/event/ZoomCameraSongEvent.hx)
+
+Default metadata registers Easy, Normal, and Hard plus the `erect` variation. That variation contains Erect and Nightmare and explicitly selects the empty instrumental suffix to reuse the same recording. Its time changes match the default metadata.
+
+The visual envelope samples separated bass, lead, drums, and combined level every 40 ms. The stage samples the current song position with interpolation. Lighting intensity and lead-side halos follow the same section map as the charts. Native note-hit callbacks add character lean and halo accents. Repeated character scaling was removed after native testing exposed global-offset accumulation in Boyfriend’s renderer.
+
+All new effect props render below character z-order. The native Flashing Lights preference reduces effect brightness and disables lightning and sharp beat pulses. The stage does not enable bot play, change note timing, or modify scoring.

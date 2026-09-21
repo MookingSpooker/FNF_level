@@ -7,24 +7,309 @@
   "atlas_frames": 36,
   "charts": {
     "easy": {
-      "notes": 432,
-      "max_attack_rounding_error_ms": 0.0004988662283267331
+      "notes": 718,
+      "max_estimated_attack_deviation_ms": 32.91099999999278,
+      "sections": [
+        {
+          "name": "Opening",
+          "player_notes": 19,
+          "opponent_notes": 40
+        },
+        {
+          "name": "Charge I",
+          "player_notes": 15,
+          "opponent_notes": 16
+        },
+        {
+          "name": "Drop I",
+          "player_notes": 27,
+          "opponent_notes": 27
+        },
+        {
+          "name": "Synth interlude I",
+          "player_notes": 21,
+          "opponent_notes": 32
+        },
+        {
+          "name": "Drop I climax",
+          "player_notes": 29,
+          "opponent_notes": 64
+        },
+        {
+          "name": "Breath",
+          "player_notes": 5,
+          "opponent_notes": 9
+        },
+        {
+          "name": "Reprise",
+          "player_notes": 28,
+          "opponent_notes": 45
+        },
+        {
+          "name": "Charge II",
+          "player_notes": 16,
+          "opponent_notes": 16
+        },
+        {
+          "name": "Drop II",
+          "player_notes": 26,
+          "opponent_notes": 27
+        },
+        {
+          "name": "Synth interlude II",
+          "player_notes": 21,
+          "opponent_notes": 30
+        },
+        {
+          "name": "Final overload",
+          "player_notes": 69,
+          "opponent_notes": 136
+        }
+      ]
     },
     "normal": {
-      "notes": 886,
-      "max_attack_rounding_error_ms": 0.0004988662283267331
+      "notes": 1291,
+      "max_estimated_attack_deviation_ms": 32.91099999999278,
+      "sections": [
+        {
+          "name": "Opening",
+          "player_notes": 36,
+          "opponent_notes": 83
+        },
+        {
+          "name": "Charge I",
+          "player_notes": 23,
+          "opponent_notes": 31
+        },
+        {
+          "name": "Drop I",
+          "player_notes": 53,
+          "opponent_notes": 45
+        },
+        {
+          "name": "Synth interlude I",
+          "player_notes": 27,
+          "opponent_notes": 64
+        },
+        {
+          "name": "Drop I climax",
+          "player_notes": 88,
+          "opponent_notes": 81
+        },
+        {
+          "name": "Breath",
+          "player_notes": 5,
+          "opponent_notes": 17
+        },
+        {
+          "name": "Reprise",
+          "player_notes": 44,
+          "opponent_notes": 92
+        },
+        {
+          "name": "Charge II",
+          "player_notes": 23,
+          "opponent_notes": 31
+        },
+        {
+          "name": "Drop II",
+          "player_notes": 50,
+          "opponent_notes": 44
+        },
+        {
+          "name": "Synth interlude II",
+          "player_notes": 29,
+          "opponent_notes": 59
+        },
+        {
+          "name": "Final overload",
+          "player_notes": 200,
+          "opponent_notes": 166
+        }
+      ]
     },
     "hard": {
-      "notes": 1179,
-      "max_attack_rounding_error_ms": 0.0004988662283267331
+      "notes": 1684,
+      "max_estimated_attack_deviation_ms": 32.91099999999278,
+      "sections": [
+        {
+          "name": "Opening",
+          "player_notes": 61,
+          "opponent_notes": 90
+        },
+        {
+          "name": "Charge I",
+          "player_notes": 32,
+          "opponent_notes": 32
+        },
+        {
+          "name": "Drop I",
+          "player_notes": 75,
+          "opponent_notes": 59
+        },
+        {
+          "name": "Synth interlude I",
+          "player_notes": 49,
+          "opponent_notes": 78
+        },
+        {
+          "name": "Drop I climax",
+          "player_notes": 116,
+          "opponent_notes": 113
+        },
+        {
+          "name": "Breath",
+          "player_notes": 7,
+          "opponent_notes": 17
+        },
+        {
+          "name": "Reprise",
+          "player_notes": 63,
+          "opponent_notes": 97
+        },
+        {
+          "name": "Charge II",
+          "player_notes": 32,
+          "opponent_notes": 33
+        },
+        {
+          "name": "Drop II",
+          "player_notes": 72,
+          "opponent_notes": 57
+        },
+        {
+          "name": "Synth interlude II",
+          "player_notes": 45,
+          "opponent_notes": 72
+        },
+        {
+          "name": "Final overload",
+          "player_notes": 258,
+          "opponent_notes": 226
+        }
+      ]
     },
     "erect": {
-      "notes": 1208,
-      "max_attack_rounding_error_ms": 0.0004988662283267331
+      "notes": 2113,
+      "max_estimated_attack_deviation_ms": 32.91099999999278,
+      "sections": [
+        {
+          "name": "Opening",
+          "player_notes": 70,
+          "opponent_notes": 109
+        },
+        {
+          "name": "Charge I",
+          "player_notes": 32,
+          "opponent_notes": 42
+        },
+        {
+          "name": "Drop I",
+          "player_notes": 80,
+          "opponent_notes": 82
+        },
+        {
+          "name": "Synth interlude I",
+          "player_notes": 52,
+          "opponent_notes": 98
+        },
+        {
+          "name": "Drop I climax",
+          "player_notes": 164,
+          "opponent_notes": 141
+        },
+        {
+          "name": "Breath",
+          "player_notes": 11,
+          "opponent_notes": 23
+        },
+        {
+          "name": "Reprise",
+          "player_notes": 81,
+          "opponent_notes": 110
+        },
+        {
+          "name": "Charge II",
+          "player_notes": 40,
+          "opponent_notes": 38
+        },
+        {
+          "name": "Drop II",
+          "player_notes": 75,
+          "opponent_notes": 65
+        },
+        {
+          "name": "Synth interlude II",
+          "player_notes": 56,
+          "opponent_notes": 89
+        },
+        {
+          "name": "Final overload",
+          "player_notes": 388,
+          "opponent_notes": 267
+        }
+      ]
     },
     "nightmare": {
-      "notes": 1653,
-      "max_attack_rounding_error_ms": 0.0004988662283267331
+      "notes": 2788,
+      "max_estimated_attack_deviation_ms": 32.953999999997905,
+      "sections": [
+        {
+          "name": "Opening",
+          "player_notes": 90,
+          "opponent_notes": 155
+        },
+        {
+          "name": "Charge I",
+          "player_notes": 44,
+          "opponent_notes": 58
+        },
+        {
+          "name": "Drop I",
+          "player_notes": 121,
+          "opponent_notes": 100
+        },
+        {
+          "name": "Synth interlude I",
+          "player_notes": 73,
+          "opponent_notes": 123
+        },
+        {
+          "name": "Drop I climax",
+          "player_notes": 217,
+          "opponent_notes": 171
+        },
+        {
+          "name": "Breath",
+          "player_notes": 15,
+          "opponent_notes": 33
+        },
+        {
+          "name": "Reprise",
+          "player_notes": 108,
+          "opponent_notes": 158
+        },
+        {
+          "name": "Charge II",
+          "player_notes": 48,
+          "opponent_notes": 55
+        },
+        {
+          "name": "Drop II",
+          "player_notes": 115,
+          "opponent_notes": 84
+        },
+        {
+          "name": "Synth interlude II",
+          "player_notes": 71,
+          "opponent_notes": 118
+        },
+        {
+          "name": "Final overload",
+          "player_notes": 514,
+          "opponent_notes": 317
+        }
+      ]
     }
   },
   "checks": [
@@ -33,6 +318,8 @@
     "All atlas rectangles in bounds",
     "No duplicate or out-of-range notes",
     "No sustain collisions or rapid same-lane repeats",
-    "Every note matches a detected acoustic attack"
+    "Every note has a matching separated musical part within 33ms",
+    "Player owns every drop lead; VOLT owns every easier lead",
+    "Both characters participate in every musical section"
   ]
 }

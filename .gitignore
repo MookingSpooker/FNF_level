@@ -6,3 +6,8 @@
 /backups/
 __pycache__/
 *.log
+/.audio-venv/
+/analysis/stems/
+/analysis/model-cache/
+/analysis/cache/
+/analysis/listening/

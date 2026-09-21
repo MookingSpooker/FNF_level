@@ -1,70 +1,491 @@
 {
-  "easy": {
-    "player_notes": 215,
-    "opponent_notes": 217,
-    "player_drop_notes": 151,
-    "two_note_chords": 0,
-    "holds": 0,
-    "peak_player_notes_in_1s": 3,
-    "first_note_ms": 1526.517,
-    "last_note_ms": 178166.517
-  },
-  "normal": {
-    "player_notes": 438,
-    "opponent_notes": 448,
-    "player_drop_notes": 314,
-    "two_note_chords": 0,
-    "holds": 1,
-    "peak_player_notes_in_1s": 7,
-    "first_note_ms": 1526.517,
-    "last_note_ms": 178375.497
-  },
-  "hard": {
-    "player_notes": 591,
-    "opponent_notes": 588,
-    "player_drop_notes": 439,
-    "two_note_chords": 16,
-    "holds": 0,
-    "peak_player_notes_in_1s": 11,
-    "first_note_ms": 1526.517,
-    "last_note_ms": 178375.497
-  },
-  "erect": {
-    "player_notes": 835,
-    "opponent_notes": 373,
-    "player_drop_notes": 679,
-    "two_note_chords": 41,
-    "holds": 0,
-    "peak_player_notes_in_1s": 12,
-    "first_note_ms": 1526.517,
-    "last_note_ms": 178375.497
-  },
-  "nightmare": {
-    "player_notes": 1153,
-    "opponent_notes": 500,
-    "player_drop_notes": 969,
-    "two_note_chords": 196,
-    "holds": 0,
-    "peak_player_notes_in_1s": 14,
-    "first_note_ms": 1526.517,
-    "last_note_ms": 178375.497
-  },
   "bpm": 160,
-  "grid_offset_ms": 34.0,
+  "grid_offset_ms": 36.25,
   "duration_seconds": 187.570794,
-  "method": "Band-weighted spectral-flux attacks near a 160 BPM sixteenth grid; six-millisecond leading-edge correction; authored lane motifs and alternating eight-beat phrases.",
-  "grid_error_median_ms": 4.7335000000020955,
-  "grid_error_p95_ms": 13.44100000000617,
-  "grid_error_max_ms": 32.82299999999668,
-  "listening_review": "User confirmed timing of v1.0. The v1.1 charts preserve those attack timestamps; added notes use the same detector and leading-edge correction.",
-  "drop_windows_seconds": [
-    [
-      25.534,
-      73.534
-    ],
-    [
-      103.534,
-      178.534
-    ]
-  ]
+  "method": "Local htdemucs estimates; other+vocals lead, bass and drums separated; bounded energy-backtracked attacks, drum-phase fit, grid timing; dominant spectral pitch contour.",
+  "sections": [
+    {
+      "name": "Opening",
+      "start": 1536.25,
+      "end": 19536.25,
+      "leadSide": 1,
+      "drop": false
+    },
+    {
+      "name": "Charge I",
+      "start": 19536.25,
+      "end": 25536.25,
+      "leadSide": 1,
+      "drop": false
+    },
+    {
+      "name": "Drop I",
+      "start": 25536.25,
+      "end": 37536.25,
+      "leadSide": 0,
+      "drop": true
+    },
+    {
+      "name": "Synth interlude I",
+      "start": 37536.25,
+      "end": 49536.25,
+      "leadSide": 1,
+      "drop": false
+    },
+    {
+      "name": "Drop I climax",
+      "start": 49536.25,
+      "end": 73536.25,
+      "leadSide": 0,
+      "drop": true
+    },
+    {
+      "name": "Breath",
+      "start": 73536.25,
+      "end": 78036.25,
+      "leadSide": 1,
+      "drop": false
+    },
+    {
+      "name": "Reprise",
+      "start": 78036.25,
+      "end": 97536.25,
+      "leadSide": 1,
+      "drop": false
+    },
+    {
+      "name": "Charge II",
+      "start": 97536.25,
+      "end": 103536.25,
+      "leadSide": 1,
+      "drop": false
+    },
+    {
+      "name": "Drop II",
+      "start": 103536.25,
+      "end": 115536.25,
+      "leadSide": 0,
+      "drop": true
+    },
+    {
+      "name": "Synth interlude II",
+      "start": 115536.25,
+      "end": 127536.25,
+      "leadSide": 1,
+      "drop": false
+    },
+    {
+      "name": "Final overload",
+      "start": 127536.25,
+      "end": 178536.25,
+      "leadSide": 0,
+      "drop": true
+    }
+  ],
+  "difficulties": {
+    "easy": {
+      "player_notes": 276,
+      "opponent_notes": 442,
+      "two_note_chords": 0,
+      "holds": 29,
+      "peak_player_notes_in_1s": 3,
+      "parts": {
+        "bass": 84,
+        "drums": 41,
+        "lead": 151
+      },
+      "sections": [
+        {
+          "name": "Opening",
+          "player_role": "backing",
+          "player_notes": 19,
+          "opponent_notes": 40
+        },
+        {
+          "name": "Charge I",
+          "player_role": "backing",
+          "player_notes": 15,
+          "opponent_notes": 16
+        },
+        {
+          "name": "Drop I",
+          "player_role": "lead",
+          "player_notes": 27,
+          "opponent_notes": 27
+        },
+        {
+          "name": "Synth interlude I",
+          "player_role": "backing",
+          "player_notes": 21,
+          "opponent_notes": 32
+        },
+        {
+          "name": "Drop I climax",
+          "player_role": "lead",
+          "player_notes": 29,
+          "opponent_notes": 64
+        },
+        {
+          "name": "Breath",
+          "player_role": "backing",
+          "player_notes": 5,
+          "opponent_notes": 9
+        },
+        {
+          "name": "Reprise",
+          "player_role": "backing",
+          "player_notes": 28,
+          "opponent_notes": 45
+        },
+        {
+          "name": "Charge II",
+          "player_role": "backing",
+          "player_notes": 16,
+          "opponent_notes": 16
+        },
+        {
+          "name": "Drop II",
+          "player_role": "lead",
+          "player_notes": 26,
+          "opponent_notes": 27
+        },
+        {
+          "name": "Synth interlude II",
+          "player_role": "backing",
+          "player_notes": 21,
+          "opponent_notes": 30
+        },
+        {
+          "name": "Final overload",
+          "player_role": "lead",
+          "player_notes": 69,
+          "opponent_notes": 136
+        }
+      ]
+    },
+    "normal": {
+      "player_notes": 578,
+      "opponent_notes": 713,
+      "two_note_chords": 0,
+      "holds": 33,
+      "peak_player_notes_in_1s": 6,
+      "parts": {
+        "bass": 140,
+        "drums": 47,
+        "lead": 391
+      },
+      "sections": [
+        {
+          "name": "Opening",
+          "player_role": "backing",
+          "player_notes": 36,
+          "opponent_notes": 83
+        },
+        {
+          "name": "Charge I",
+          "player_role": "backing",
+          "player_notes": 23,
+          "opponent_notes": 31
+        },
+        {
+          "name": "Drop I",
+          "player_role": "lead",
+          "player_notes": 53,
+          "opponent_notes": 45
+        },
+        {
+          "name": "Synth interlude I",
+          "player_role": "backing",
+          "player_notes": 27,
+          "opponent_notes": 64
+        },
+        {
+          "name": "Drop I climax",
+          "player_role": "lead",
+          "player_notes": 88,
+          "opponent_notes": 81
+        },
+        {
+          "name": "Breath",
+          "player_role": "backing",
+          "player_notes": 5,
+          "opponent_notes": 17
+        },
+        {
+          "name": "Reprise",
+          "player_role": "backing",
+          "player_notes": 44,
+          "opponent_notes": 92
+        },
+        {
+          "name": "Charge II",
+          "player_role": "backing",
+          "player_notes": 23,
+          "opponent_notes": 31
+        },
+        {
+          "name": "Drop II",
+          "player_role": "lead",
+          "player_notes": 50,
+          "opponent_notes": 44
+        },
+        {
+          "name": "Synth interlude II",
+          "player_role": "backing",
+          "player_notes": 29,
+          "opponent_notes": 59
+        },
+        {
+          "name": "Final overload",
+          "player_role": "lead",
+          "player_notes": 200,
+          "opponent_notes": 166
+        }
+      ]
+    },
+    "hard": {
+      "player_notes": 810,
+      "opponent_notes": 874,
+      "two_note_chords": 43,
+      "holds": 26,
+      "peak_player_notes_in_1s": 10,
+      "parts": {
+        "bass": 238,
+        "drums": 94,
+        "lead": 478
+      },
+      "sections": [
+        {
+          "name": "Opening",
+          "player_role": "backing",
+          "player_notes": 61,
+          "opponent_notes": 90
+        },
+        {
+          "name": "Charge I",
+          "player_role": "backing",
+          "player_notes": 32,
+          "opponent_notes": 32
+        },
+        {
+          "name": "Drop I",
+          "player_role": "lead",
+          "player_notes": 75,
+          "opponent_notes": 59
+        },
+        {
+          "name": "Synth interlude I",
+          "player_role": "backing",
+          "player_notes": 49,
+          "opponent_notes": 78
+        },
+        {
+          "name": "Drop I climax",
+          "player_role": "lead",
+          "player_notes": 116,
+          "opponent_notes": 113
+        },
+        {
+          "name": "Breath",
+          "player_role": "backing",
+          "player_notes": 7,
+          "opponent_notes": 17
+        },
+        {
+          "name": "Reprise",
+          "player_role": "backing",
+          "player_notes": 63,
+          "opponent_notes": 97
+        },
+        {
+          "name": "Charge II",
+          "player_role": "backing",
+          "player_notes": 32,
+          "opponent_notes": 33
+        },
+        {
+          "name": "Drop II",
+          "player_role": "lead",
+          "player_notes": 72,
+          "opponent_notes": 57
+        },
+        {
+          "name": "Synth interlude II",
+          "player_role": "backing",
+          "player_notes": 45,
+          "opponent_notes": 72
+        },
+        {
+          "name": "Final overload",
+          "player_role": "lead",
+          "player_notes": 258,
+          "opponent_notes": 226
+        }
+      ]
+    },
+    "erect": {
+      "player_notes": 1049,
+      "opponent_notes": 1064,
+      "two_note_chords": 70,
+      "holds": 19,
+      "peak_player_notes_in_1s": 13,
+      "parts": {
+        "bass": 291,
+        "drums": 121,
+        "lead": 637
+      },
+      "sections": [
+        {
+          "name": "Opening",
+          "player_role": "backing",
+          "player_notes": 70,
+          "opponent_notes": 109
+        },
+        {
+          "name": "Charge I",
+          "player_role": "backing",
+          "player_notes": 32,
+          "opponent_notes": 42
+        },
+        {
+          "name": "Drop I",
+          "player_role": "lead",
+          "player_notes": 80,
+          "opponent_notes": 82
+        },
+        {
+          "name": "Synth interlude I",
+          "player_role": "backing",
+          "player_notes": 52,
+          "opponent_notes": 98
+        },
+        {
+          "name": "Drop I climax",
+          "player_role": "lead",
+          "player_notes": 164,
+          "opponent_notes": 141
+        },
+        {
+          "name": "Breath",
+          "player_role": "backing",
+          "player_notes": 11,
+          "opponent_notes": 23
+        },
+        {
+          "name": "Reprise",
+          "player_role": "backing",
+          "player_notes": 81,
+          "opponent_notes": 110
+        },
+        {
+          "name": "Charge II",
+          "player_role": "backing",
+          "player_notes": 40,
+          "opponent_notes": 38
+        },
+        {
+          "name": "Drop II",
+          "player_role": "lead",
+          "player_notes": 75,
+          "opponent_notes": 65
+        },
+        {
+          "name": "Synth interlude II",
+          "player_role": "backing",
+          "player_notes": 56,
+          "opponent_notes": 89
+        },
+        {
+          "name": "Final overload",
+          "player_role": "lead",
+          "player_notes": 388,
+          "opponent_notes": 267
+        }
+      ]
+    },
+    "nightmare": {
+      "player_notes": 1416,
+      "opponent_notes": 1372,
+      "two_note_chords": 139,
+      "holds": 11,
+      "peak_player_notes_in_1s": 14,
+      "parts": {
+        "bass": 389,
+        "drums": 199,
+        "lead": 828
+      },
+      "sections": [
+        {
+          "name": "Opening",
+          "player_role": "backing",
+          "player_notes": 90,
+          "opponent_notes": 155
+        },
+        {
+          "name": "Charge I",
+          "player_role": "backing",
+          "player_notes": 44,
+          "opponent_notes": 58
+        },
+        {
+          "name": "Drop I",
+          "player_role": "lead",
+          "player_notes": 121,
+          "opponent_notes": 100
+        },
+        {
+          "name": "Synth interlude I",
+          "player_role": "backing",
+          "player_notes": 73,
+          "opponent_notes": 123
+        },
+        {
+          "name": "Drop I climax",
+          "player_role": "lead",
+          "player_notes": 217,
+          "opponent_notes": 171
+        },
+        {
+          "name": "Breath",
+          "player_role": "backing",
+          "player_notes": 15,
+          "opponent_notes": 33
+        },
+        {
+          "name": "Reprise",
+          "player_role": "backing",
+          "player_notes": 108,
+          "opponent_notes": 158
+        },
+        {
+          "name": "Charge II",
+          "player_role": "backing",
+          "player_notes": 48,
+          "opponent_notes": 55
+        },
+        {
+          "name": "Drop II",
+          "player_role": "lead",
+          "player_notes": 115,
+          "opponent_notes": 84
+        },
+        {
+          "name": "Synth interlude II",
+          "player_role": "backing",
+          "player_notes": 71,
+          "opponent_notes": 118
+        },
+        {
+          "name": "Final overload",
+          "player_role": "lead",
+          "player_notes": 514,
+          "opponent_notes": 317
+        }
+      ]
+    }
+  },
+  "attack_grid_deviation_median_ms": 5.927,
+  "attack_grid_deviation_p95_ms": 28.884850000000004,
+  "attack_grid_deviation_max_ms": 32.954,
+  "timing_note": "This measures agreement with estimated stem attacks, not perceptual timing accuracy. Full-mix playback is unchanged."
 }

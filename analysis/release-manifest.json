@@ -1,0 +1,28 @@
+{
+  "version": "1.2.0",
+  "files": {
+    "CREDITS.md": "e09878843ce04a9dfd7837f25a4449301121ec248400fc41a741523f90ba5af4",
+    "_polymod_icon.png": "f35c9670dd60176604557e584bb95d3dacf708c2aa3f88eafa0a9ac45f54dedd",
+    "_polymod_meta.json": "edd8839a6dfcd04e942f5396861749a081eda12048bd34b5d4e403dd2938173c",
+    "data/energize-reactivity.json": "14fb9d1705cedee813dfea0855cf86dab520556e945551d1b492be5605713c08",
+    "data/characters/volt.json": "fdcf1181e78cd2103c701239a56b70dadbd824c70cc79ab89941c2d9243a7bac",
+    "data/levels/energize.json": "5921552ce161673450ad0178f8023ce366dafd9bafdfe2c6cb350f0816bdde4c",
+    "data/stages/dynamo.json": "5e36511552affe00299960d387ecf7a1505bfa0b711ebf48dfb2c3472380b96a",
+    "data/songs/energize/energize-chart-erect.json": "2b0bb763c6b8ad9b2c9a10259cc6f718608d5b8af1733e8ac5c1029645929a3e",
+    "data/songs/energize/energize-chart.json": "3f0765fec04a387235ce9bf53631e6dc5ce1565c2fc698b92f01601dc8fb1665",
+    "data/songs/energize/energize-metadata-erect.json": "13f61568680fb1d6fb805e3046b31541ed24a540f2fa26ae6c5eeba97c26d8c2",
+    "data/songs/energize/energize-metadata.json": "513f9bb705056e89117e168effadb46db380997b3bc0e5691bcfc77391192def",
+    "images/characters/volt.png": "38a463495cb3c58d55ae0207f2ab5e0514b24d9f706fc94b67bb034d2f14c0ff",
+    "images/characters/volt.xml": "14126351165d844aed122e981d8ba3033f68f071040a3a3d12532f967cbb5698",
+    "images/icons/icon-volt.png": "000fa43c082c70d3e7425d4c30bc74d825d8ca569a3348774733c1d6551ea085",
+    "images/stages/dynamo.png": "447020336c8f1e0afa88c8c03fd9e21e5c5d0cc2f30ff92a4007e7931f52bb70",
+    "images/freeplay/icons/voltpixel.png": "2747127f80351b1bf2de646e144458622100fa94fa9184f390b45f81a7a88140",
+    "images/stages/dynamo-fx/beam.png": "a0c75fddaac20a7ce6f078ab430d6cb33576f251a94ff7580fece14d93d7aef5",
+    "images/stages/dynamo-fx/bolt.png": "d2e929042193b76794b1c86e2340a45b4279a31d485e18c47c88195499bd2f79",
+    "images/stages/dynamo-fx/core.png": "71a3839c494e2cfa4a7c0d73e419ee71ee2cd73bf35694ae7d63fe446e6dcc65",
+    "images/stages/dynamo-fx/ring.png": "abc896509607ee92aa4bcf76c9ead8b1831423ec5c09b5c5b728e4169c235997",
+    "images/storymenu/titles/energize.png": "1d0c4d3c6c7f1458305687b572d8978701b09dc6063cbb9d9bd5821e9af6e80f",
+    "scripts/stages/dynamo.hxc": "780cf78be8a8c1b00cef562965a39aefcdb846fd73f8bd880cf95535c92cfd12",
+    "songs/energize/Inst.ogg": "845d431e4b5a70557278285b7ff4dd9f1873b0a04ff9425bdfc23715e3ddeb41"
+  }
+}

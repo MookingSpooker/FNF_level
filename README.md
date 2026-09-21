@@ -1,62 +1,77 @@
-# ENERGIZE: VS VOLT
+# ENERGIZE: VS VOLT — 1.2
 
-A native Friday Night Funkin' **0.8.4** level using the supplied **Energize — Tonytonychopper999** recording.
+A native Friday Night Funkin’ **0.8.4** level using the supplied **Energize — Tonytonychopper999** recording.
 
 ## Play
 
-The mod is installed in `C:\Users\Leane\Downloads\funkin-windows-64bit\mods\energize`.
+The updated mod is installed in `C:\Users\Leane\Downloads\funkin-windows-64bit\mods\energize`.
 
-1. Open **Launch ENERGIZE.cmd**, or start your existing **Funkin.exe**.
-2. Choose **Freeplay → Energize**. It is also available at the bottom of Story Mode as **ENERGIZE: VS VOLT**.
-3. Choose **Easy**, **Normal**, or **Hard**. Use your existing arrow/key bindings.
+1. Open **Launch ENERGIZE.cmd**, or start **Funkin.exe**.
+2. Choose **Freeplay → Energize**. Story Mode also contains **ENERGIZE: VS VOLT**.
+3. Select **Easy, Normal, Hard, Erect, or Nightmare** using the difficulty controls.
 
-VOLT is a CRT-headed electric street DJ with six illustrated poses and beat-driven animation. The Dynamo is an original neon rooftop reactor stage. Boyfriend, Girlfriend, notes, scoring, health, controls, and game-over mechanics use the original engine.
+Your normal controls, health, scoring, holds, and game-over mechanics apply. The shipped mod never enables bot play.
 
-| Difficulty | Player notes | Peak notes/second | Scroll speed |
-| --- | ---: | ---: | ---: |
-| Easy | 215 | 3 | 1.5 |
-| Normal | 391 | 6 | 2.0 |
-| Hard | 494 | 9 | 2.5 |
+## The musical duet
 
-## Song and chart
+Boyfriend carries the lead during drops. VOLT carries the easier lead and quieter synth interludes while you play bass and drum accents. During your lead, VOLT supplies the backing part. Roles change at musical section boundaries, with a sustained player lead through the final overload; there is no repeating three-second handoff.
 
-The complete supplied MP3 is converted to Ogg Vorbis without trimming, stretching, normalization, or tempo changes. Length: **187.5708 seconds**. Its measured pulse is **160 BPM**. The chart follows detected attacks near eighth- and sixteenth-note subdivisions, with repeating lane motifs and alternating eight-beat turns. The intro, breakdown, and reverb tail leave breathing room. No random notes, traps, or extra mechanics are added.
+The chart uses separate estimates of lead, bass, and drums, created locally from the supplied recording with Demucs. Dominant pitch movement guides arrow direction. Strong simultaneous lead and drum attacks produce measured doubles on the harder charts. Holds require a stable pitched tail and enough space before the next note.
 
-The supplied recording is a full mix. It plays as `Inst.ogg`; no invented or duplicated vocal stems are included. Missing notes still affects health and score, but cannot mute individual voices within the supplied mix.
+| Difficulty | Player notes | Peak notes in one second | Holds | Doubles | Scroll speed |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Easy | 276 | 3 | 29 | 0 | 1.5 |
+| Normal | 578 | 6 | 33 | 0 | 2.1 |
+| Hard | 810 | 10 | 26 | 43 | 2.6 |
+| Erect | 1,049 | 13 | 19 | 70 | 2.9 |
+| Nightmare | 1,416 | 14 | 11 | 139 | 3.2 |
 
-The user played the native level and reported **“Timing feels good.”** Hard difficulty completed the full song and reached the native results screen. Automated checks passed for all three charts: audio identity, chart bounds, lane spacing, asset references, atlas rectangles, and sustain collisions. See `analysis/validation.json`, `analysis/chart-report.json`, and `analysis/native-playtest.json`. The sub-millisecond rounding statistic in the validator checks serialized timestamps only; it is not a claim of perceptual timing precision.
+The tempo remains **160 BPM**. The new grid phase is **36.25 ms**, measured from separated drum attacks. Notes follow that stable grid instead of inheriting fluctuating peaks from the full mix. Estimated attacks must fall within 33 ms of their chart timestamps. This is audio-assisted arrangement, not studio MIDI or a claim of perfect transcription. Hardware latency still uses the game’s normal calibration.
 
-## Install elsewhere
+The complete **187.5708-second** recording remains unchanged from the previous mod audio: no trimming, stretching, or replacement music. Estimated stems are development inputs only and are not included in the playable mod. Missing notes affects health and score but cannot mute individual instruments inside the supplied full mix.
 
-Copy the **energize** folder from `mods` into the game's **mods** folder, then restart FNF. It must contain `_polymod_meta.json` directly inside `mods/energize`.
+## Stage and characters
 
-Alternatively, from PowerShell:
+VOLT’s CRT poses and Boyfriend’s original animations now have direction-sensitive hit reactions and separate reactive halos. The Dynamo adds rotating reactor segments, expanding rings, sweeping beams, lightning, sparks, an equalizer, floor rings, and section-based camera moves. Bass, lead, and drum envelopes drive different effects. The song clock controls motion so pause and retry cannot accumulate drift.
+
+Effects remain behind the characters and the native note interface. The game’s **Flashing Lights** preference dims the effects and disables lightning and sharp beat pulses when turned off.
+
+## Verification
+
+All five charts pass audio identity, asset, timing-evidence, difficulty progression, note spacing, sustain collision, and musical-role checks. Every section gives both characters a part. Every drop assigns its lead to the player. See `analysis/validation.json`, `analysis/chart-report.json`, and `analysis/note-provenance.json`.
+
+Native playtest details are recorded separately in `analysis/native-playtest-v12.json`. Bot play is used only for developer testing. The user’s earlier “Timing feels good” feedback applies to version 1.0, not this rebuilt arrangement.
+
+## Install or edit
+
+Copy the **energize** folder from `mods` into another FNF 0.8.4 installation’s **mods** folder and restart. `_polymod_meta.json` must sit directly inside `mods/energize`.
 
 ```powershell
 .\tools\Install-Mod.ps1 -GamePath 'C:\path\to\funkin-windows-64bit'
 ```
 
-The installer checks for unrelated folders and backs up an existing version of this mod in this project's `backups` directory. It never edits base-game assets. Remove only `mods/energize` to uninstall.
+The installer backs up an existing ENERGIZE mod under `backups` and preserves base-game assets.
 
-## Edit or rebuild
+- `dist/energize-mod.zip`: complete playable mod.
+- `dist/energize.fnfc`: editable native chart archive. Keep the mod installed for VOLT and the stage.
+- `tools/separate_audio.py`: local four-stem estimation.
+- `tools/analyze_parts.py`: distinct attack streams and pitch estimates.
+- `tools/musical_chart.py`: authored section roles, difficulty patterns, and note provenance.
+- `tools/build_effects.py`: procedural effect geometry and separate audio envelopes.
+- `tools/build_mod.py`: rebuilds the mod’s data and artwork metadata.
+- `tools/validate_mod.py`: chart, asset, and audio checks.
+- `research/MODDING.md`: primary references and implementation decisions.
 
-- `mods/energize/`: complete installable mod.
-- `dist/energize-mod.zip`: packaged mod folder.
-- `dist/energize.fnfc`: editable chart archive; drag it onto FNF to open the Chart Editor. Keep the mod installed for the custom character and stage.
-- `art/`: original generated PNGs, plus prompts and asset notes.
-- `tools/analyze_audio.py`: spectral-flux timing analysis of the decoded game audio.
-- `tools/build_mod.py`: reproducible charts, JSON, atlas metadata, and UI icons.
-- `tools/validate_mod.py`: structural and audio verification.
-- `research/MODDING.md`: official references and compatibility decisions.
+## Rebuild
 
-The development scripts require Python 3, NumPy, Pillow, and FFmpeg on PATH. They are not required to play. To rebuild analysis, decode the exact game audio first:
+Development requires Python 3.12, FFmpeg on PATH, and the packages in `tools/requirements-audio.txt`. The isolated `.audio-venv` is already installed on this machine. Model downloads and estimated WAV stems stay under ignored `analysis` folders. Players do not need these tools.
 
 ```powershell
-ffmpeg -i .\mods\energize\songs\energize\Inst.ogg -ac 1 -ar 22050 -c:a pcm_s16le .\analysis\energize.wav
-python .\tools\analyze_audio.py
-python .\tools\build_mod.py
-python .\tools\validate_mod.py
-python .\tools\package_mod.py
+.\.audio-venv\Scripts\python.exe tools\separate_audio.py
+.\.audio-venv\Scripts\python.exe tools\analyze_parts.py
+.\.audio-venv\Scripts\python.exe tools\build_mod.py
+.\.audio-venv\Scripts\python.exe tools\validate_mod.py
+.\.audio-venv\Scripts\python.exe tools\package_mod.py
 ```
 
-No engine compilation, replacement executable, Python runtime, or extra mod engine is needed for players. Read the music and asset credits before sharing the package.
+The original artwork and prompts remain in `art`. Read the music and asset credits before sharing the package.

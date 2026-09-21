@@ -7,7 +7,7 @@
   "offsets": {
     "instrumental": 0
   },
-  "generatedBy": "ENERGIZE chart builder 1.1",
+  "generatedBy": "ENERGIZE chart builder 1.2",
   "timeChanges": [
     {
       "t": 0,
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "t": 34.0,
+      "t": 36.25,
       "b": 0,
       "bpm": 160,
       "n": 4,

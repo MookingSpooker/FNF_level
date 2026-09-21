@@ -57,6 +57,186 @@
       "alpha": 0
     },
     {
+      "name": "reactorCore",
+      "assetPath": "stages/dynamo-fx/core",
+      "position": [
+        460,
+        5
+      ],
+      "scale": [
+        1.15,
+        1.15
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 11,
+      "alpha": 0.6
+    },
+    {
+      "name": "wash",
+      "assetPath": "#7951DA",
+      "position": [
+        -320,
+        -270
+      ],
+      "scale": [
+        2074,
+        1382
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 1,
+      "alpha": 0
+    },
+    {
+      "name": "halo0",
+      "assetPath": "stages/dynamo-fx/ring",
+      "position": [
+        34,
+        335
+      ],
+      "scale": [
+        0.95,
+        0.95
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 16,
+      "alpha": 0.25
+    },
+    {
+      "name": "floor0",
+      "assetPath": "stages/dynamo-fx/core",
+      "position": [
+        34,
+        565
+      ],
+      "scale": [
+        1.05,
+        0.32
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 15,
+      "alpha": 0.35
+    },
+    {
+      "name": "halo1",
+      "assetPath": "stages/dynamo-fx/ring",
+      "position": [
+        834,
+        335
+      ],
+      "scale": [
+        0.95,
+        0.95
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 16,
+      "alpha": 0.25
+    },
+    {
+      "name": "floor1",
+      "assetPath": "stages/dynamo-fx/core",
+      "position": [
+        834,
+        565
+      ],
+      "scale": [
+        1.05,
+        0.32
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 15,
+      "alpha": 0.35
+    },
+    {
+      "name": "bolt0",
+      "assetPath": "stages/dynamo-fx/bolt",
+      "position": [
+        -15,
+        -70
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 14,
+      "alpha": 0
+    },
+    {
+      "name": "bolt1",
+      "assetPath": "stages/dynamo-fx/bolt",
+      "position": [
+        320,
+        -70
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 14,
+      "alpha": 0
+    },
+    {
+      "name": "bolt2",
+      "assetPath": "stages/dynamo-fx/bolt",
+      "position": [
+        865,
+        -70
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 14,
+      "alpha": 0
+    },
+    {
+      "name": "bolt3",
+      "assetPath": "stages/dynamo-fx/bolt",
+      "position": [
+        1260,
+        -70
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "scroll": [
+        1,
+        1
+      ],
+      "zIndex": 14,
+      "alpha": 0
+    },
+    {
       "name": "beam0",
       "assetPath": "stages/dynamo-fx/beam",
       "position": [

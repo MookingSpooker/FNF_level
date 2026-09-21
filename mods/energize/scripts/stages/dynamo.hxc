@@ -19,6 +19,14 @@ class EnergizeDynamoStage extends Stage
   var sparks:Array<FlxSprite> = [];
   var ring:FlxSprite;
   var echo:FlxSprite;
+  var core:FlxSprite;
+  var wash:FlxSprite;
+  var halos:Array<FlxSprite> = [];
+  var floors:Array<FlxSprite> = [];
+  var bolts:Array<FlxSprite> = [];
+  var hitTimes:Array<Float> = [-10000.0, -10000.0];
+  var hitDirections:Array<Int> = [0, 0];
+  var previousTime:Float = -10000;
 
   override function buildStage()
   {
@@ -29,6 +37,18 @@ class EnergizeDynamoStage extends Stage
     sparks = [];
     ring = getNamedProp('reactorRing');
     echo = getNamedProp('reactorEcho');
+    core = getNamedProp('reactorCore');
+    wash = getNamedProp('wash');
+    halos = []; floors = []; bolts = [];
+    hitTimes = [-10000.0, -10000.0];
+    for (i in 0...2)
+    {
+      halos.push(getNamedProp('halo' + i));
+      floors.push(getNamedProp('floor' + i));
+    }
+    halos[0].color = 0xFFC391FF;
+    floors[0].color = 0xFFE68DFF;
+    for (i in 0...4) bolts.push(getNamedProp('bolt' + i));
     for (i in 0...32)
     {
       var bar = getNamedProp('eq' + i);
@@ -42,7 +62,16 @@ class EnergizeDynamoStage extends Stage
       beams.push(beam);
     }
     for (i in 0...18) sparks.push(getNamedProp('spark' + i));
-    trace('ENERGIZE FX ready: audio envelope, reactor rings, 32 bars, 4 beams, 18 sparks.');
+    trace('ENERGIZE 1.2 FX ready: separated parts, character reactions, reactor, lightning and lights.');
+  }
+
+  override function onNoteHit(event:HitNoteScriptEvent):Void
+  {
+    super.onNoteHit(event);
+    if (event.eventCanceled) return;
+    var side = event.note.noteData.getMustHitNote() ? 1 : 0;
+    hitTimes[side] = Conductor.instance.songPosition;
+    hitDirections[side] = event.note.noteData.getDirection();
   }
 
   function sample(position:Float, band:Int):Float
@@ -62,22 +91,69 @@ class EnergizeDynamoStage extends Stage
     // All motion derives from the song clock: pause, seek and retry cannot accumulate drift.
     var time = Conductor.instance.songPosition;
     var seconds = Math.max(0, time) / 1000;
-    var beat = Math.max(0, time - 34) / 375;
+    if (time < previousTime - 100) hitTimes = [-10000.0, -10000.0];
+    previousTime = time;
+    var beat = Math.max(0, time - envelope.offsetMs) / 375;
     var phase = beat - Math.floor(beat);
     var bass = sample(time, 0);
     var mid = sample(time, 1);
     var high = sample(time, 2);
     var level = sample(time, 3);
-    var drop = (time >= 25534 && time < 73534) || (time >= 103534 && time < 178534);
-    var intensity = drop ? 1.0 : 0.58;
-    var lights = Preferences.flashingLights ? 1.0 : 0.32;
+    var drop = false;
+    var playerLead = false;
+    for (section in envelope.sections)
+    {
+      if (time >= section.start && time < section.end)
+      {
+        drop = section.drop;
+        playerLead = section.leadSide == 0;
+      }
+    }
+    var intensity = drop ? 1.0 : 0.55;
+    var lights = Preferences.flashingLights ? 1.0 : 0.28;
     var pulse = Preferences.flashingLights ? Math.pow(1 - phase, 3) * bass : 0.0;
 
-    ring.alpha = (0.12 + bass * 0.32 + pulse * 0.15) * lights;
-    ring.scale.set(1.12 + bass * 0.04 + pulse * 0.035, 1.12 + bass * 0.04 + pulse * 0.035);
+    ring.alpha = (0.16 + bass * 0.46 + pulse * 0.3) * lights;
+    ring.scale.set(1.12 + bass * 0.09 + pulse * 0.075, 1.12 + bass * 0.09 + pulse * 0.075);
+    core.angle = beat * 7.5;
+    core.alpha = (.18 + mid * .5 + pulse * .25) * lights;
+    core.scale.set(1.08 + mid * .11, 1.08 + mid * .11);
+    wash.alpha = (level * .045 + pulse * .14) * intensity * lights;
     var expansion = (beat / 4) - Math.floor(beat / 4);
     echo.scale.set(1.12 + expansion * 0.65, 1.12 + expansion * 0.65);
-    echo.alpha = (1 - expansion) * level * 0.19 * intensity * lights;
+    echo.alpha = (1 - expansion) * level * 0.48 * intensity * lights;
+
+    // Keep engine positions and atlas scale intact. Repeated setScale calls
+    // would accumulate global offsets on Boyfriend's multi-atlas renderer.
+    // The ordinary sing animations handle direction, holds, misses and scoring.
+    for (i in 0...2)
+    {
+      var character = i == 0 ? getDad() : getBoyfriend();
+      var age = time - hitTimes[i];
+      var hit = age >= 0 && age < 260 ? Math.pow(1 - age / 260, 2) : 0.0;
+      var leads = i == 1 ? playerLead : !playerLead;
+      var energy = leads ? mid : bass;
+      halos[i].scale.set(.83 + energy * .12 + hit * .13, .83 + energy * .12 + hit * .13);
+      halos[i].angle = (i == 0 ? 1 : -1) * beat * 12;
+      halos[i].alpha = (.08 + energy * (leads ? .34 : .18) + hit * .45) * lights;
+      floors[i].angle = Math.sin(beat * .6 + i) * 6;
+      floors[i].alpha = (.16 + bass * .3 + hit * .34) * lights;
+      if (character != null)
+      {
+        var lean = hitDirections[i] == 0 ? -1 : (hitDirections[i] == 3 ? 1 : 0);
+        character.angle = lean * hit * 4 + Math.sin(beat * Math.PI) * energy * .8;
+      }
+    }
+    var girlfriend = getGirlfriend();
+    if (girlfriend != null) girlfriend.angle = Math.sin(beat * Math.PI) * level * 1.4;
+
+    for (i in 0...bolts.length)
+    {
+      var strike = Math.pow(1 - ((beat / 2 + i * .5) % 1), 10);
+      bolts[i].alpha = Preferences.flashingLights ? strike * high * intensity * .95 : 0;
+      bolts[i].scale.x = .75 + bass * .45;
+      bolts[i].angle = Math.sin(beat * .7 + i) * 7;
+    }
 
     for (i in 0...bars.length)
     {
@@ -85,19 +161,19 @@ class EnergizeDynamoStage extends Stage
       var energy = band == 0 ? bass : (band == 1 ? mid : high);
       var shape = 0.62 + 0.38 * Math.sin(i * 0.7 + beat * 0.35);
       bars[i].scale.y = 0.08 + energy * shape * intensity;
-      bars[i].alpha = (0.18 + energy * 0.36) * lights;
+      bars[i].alpha = (0.22 + energy * 0.58) * lights;
     }
     for (i in 0...beams.length)
     {
-      beams[i].angle = Math.sin(beat * Math.PI / 8 + i * 1.5) * (drop ? 24 : 13);
-      beams[i].alpha = (0.12 + level * 0.3 + pulse * 0.15) * intensity * lights;
+      beams[i].angle = Math.sin(beat * Math.PI / 8 + i * 1.5) * (drop ? 38 : 18);
+      beams[i].alpha = (0.2 + level * 0.5 + pulse * 0.28) * intensity * lights;
     }
     for (i in 0...sparks.length)
     {
       var travel = (seconds * (0.13 + (i % 4) * 0.02) + i * 0.137) % 1;
       sparks[i].x = 80 + i * 73 + Math.sin(beat * 0.3 + i) * 22;
       sparks[i].y = 690 - travel * 780;
-      sparks[i].alpha = Math.sin(travel * Math.PI) * high * intensity * 0.55 * lights;
+      sparks[i].alpha = Math.sin(travel * Math.PI) * (high + mid * .4) * intensity * 0.8 * lights;
     }
   }
 }
