@@ -1,0 +1,24 @@
+{
+  "version": "1.3.0",
+  "engine": "0.8.4",
+  "date": "2026-09-22",
+  "status": "PASS",
+  "mode": "Native Chart Editor full-stage bot play",
+  "full_song_difficulty": "hard",
+  "duration_seconds": 187.57079365,
+  "observations": [
+    "Five difficulties imported and visible in the native editor",
+    "Hard played from start through the final cheer and tail, then returned automatically to the editor",
+    "Boyfriend has the continuous foreground stream and VOLT a sparse accompaniment",
+    "All three characters and existing stage effects remain visible",
+    "Sampled in-song screenshots show 60 FPS; this is not a performance benchmark",
+    "No script exceptions or camera-ease errors; stderr is empty"
+  ],
+  "automated_checks": "All five charts pass validation, exact original rhythm preservation, advanced core preservation, and unchanged asset checks",
+  "limits": [
+    "Bot play checks integration rather than subjective musical feel",
+    "Erect and Nightmare were validated structurally; this version was not given a full native bot run on those difficulties"
+  ],
+  "installed_and_zip_match": true,
+  "verified_mod_files": 23
+}

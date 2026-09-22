@@ -73,9 +73,15 @@ for role in ['bf','gf']:
 parts=read(ROOT/'analysis/parts.json')
 provenance=read(ROOT/'analysis/note-provenance.json')
 report=read(ROOT/'analysis/chart-report.json')
-part_attacks={name:{a['t']:a for a in values} for name,values in parts['parts'].items()}
-assert envelope['offsetMs']==parts['offset_ms']==meta['timeChanges'][1]['t']
+reference=read(ROOT/'analysis/reference-v1-chart.json')['notes']
+part_attacks={name:{a['step']:a for a in values} for name,values in parts['parts'].items()}
+features=np.load(ROOT/'analysis/features.npz')
+strength=features['onset'];times=features['times']
+peaks=np.where((strength>np.roll(strength,1))&(strength>=np.roll(strength,-1)))[0]
+peak_times=np.round((times[peaks]-.006)*1000,3)
+assert envelope['offsetMs']==report['grid_offset_ms']==meta['timeChanges'][1]['t']==34
 assert envelope['sections']==report['sections']
+assert all(s['leadSide']==0 for s in envelope['sections']), 'Foreground still switches away from Boyfriend'
 stats={}
 all_charts={**chart['notes'],**advanced_chart['notes']}
 for difficulty,notes in all_charts.items():
@@ -98,27 +104,35 @@ for difficulty,notes in all_charts.items():
     errors=[]
     for n in notes:
         a=proof[(n['t'],n['d'])]
-        attack=part_attacks[a['part']][n['t']]
-        errors.append(abs(n['t']-attack['attack']))
-        section=next(s for s in report['sections'] if s['start']<=n['t']<s['end'])
-        if a['part']=='lead':
-            assert n['d']//4==section['leadSide'],'Lead assigned to the wrong character'
+        if n['d']<4:
+            assert a['role'] in ['foreground','accent'], 'Player still receives the backing role'
+            p=int(np.argmin(abs(peak_times-n['t'])))
+            errors.append(float(abs(peak_times[p]-n['t'])))
+            assert errors[-1]<.001,'Player attack differs from the original detector timeline'
+            assert strength[peaks[p]]>=.23,'Player receives a weak texture attack'
+            if a['role']=='accent':
+                stem=part_attacks['drums'][a['step']]
+                assert abs(stem['attack']-n['t'])<=32 and stem['strength']>=.75
+                assert any(x['t']==n['t'] and x['d']<4 and x['role']=='foreground' for x in proof.values()), 'Accent replaces the foreground'
         else:
-            assert n['d']//4!=section['leadSide'] or (a['part']=='drums' and
-                len([x for x in notes if x['t']==n['t'] and x['d']//4==n['d']//4])==2), 'Backing part unexpectedly replaces lead'
-    assert max(errors)<33.01,'Chart timing too far from a separated acoustic attack'
+            assert a['role']=='backing' and a['part'] in ['bass','drums'], 'VOLT steals a foreground phrase'
+            stem=part_attacks[a['part']][a['step']]
+            assert abs(n['t']-stem['attack'])<=32, 'Backing attack lost its audio evidence'
+    baseline=reference[difficulty if difficulty in reference else 'hard']
+    player=[n for n in notes if n['d']<4]
+    assert all(any(n['t']==old['t'] and n['l']==old['l'] for n in player) for old in baseline), 'An original foreground attack or sustain was lost'
+    if difficulty in reference:
+        assert len(player)==len(baseline), 'Unexpected filler in a base difficulty'
+    else:
+        assert all(n in player for n in all_charts['hard'] if n['d']<4), 'Advanced chart changes the core Hard pattern'
     section_checks=[]
     for section in report['sections']:
-        own=[a for a in provenance[difficulty] if section['start']<=a['t']<section['end']]
-        player=[a for a in own if a['d']<4]
-        opponent=[a for a in own if a['d']>=4]
-        assert player and opponent, 'One character is silent for an entire musical section'
-        lead_player=sum(a['part']=='lead' for a in player)
-        if section['drop']:assert lead_player/len(player)>.7,'Player does not carry drop melody'
-        else:assert lead_player==0,'Player steals the easier lead from VOLT'
-        section_checks.append({'name':section['name'],'player_notes':len(player),'opponent_notes':len(opponent)})
-    stats[difficulty]={'notes':len(notes),'max_estimated_attack_deviation_ms':max(errors),
-        'sections':section_checks}
+        own=[a for a in proof.values() if section['start']-40<=a['t']<section['end']-40]
+        assert any(a['d']<4 for a in own) and any(a['d']>=4 for a in own), 'A section loses its duet'
+        section_checks.append({'name':section['name'],'player_notes':sum(a['d']<4 for a in own),
+            'opponent_notes':sum(a['d']>=4 for a in own)})
+    stats[difficulty]={'notes':len(notes),'original_foreground_attacks_retained':len(baseline),
+        'max_player_timestamp_rounding_error_ms':max(errors),'sections':section_checks}
 player_counts=[sum(n['d']<4 for n in all_charts[d]) for d in ['easy','normal','hard','erect','nightmare']]
 assert player_counts==sorted(set(player_counts)),'Difficulty progression is not strictly increasing'
 result={'status':'PASS','audio_correlation':audio_correlation,
@@ -128,8 +142,10 @@ result={'status':'PASS','audio_correlation':audio_correlation,
         'checks':['Exact supplied recording, unchanged length','All required assets resolve',
                   'All atlas rectangles in bounds','No duplicate or out-of-range notes',
                   'No sustain collisions or rapid same-lane repeats',
-                  'Every note has a matching separated musical part within 33ms',
-                  'Player owns every drop lead; VOLT owns every easier lead',
+                  'Original foreground timestamps and sustains retained exactly on Boyfriend',
+                  'Player owns the foreground throughout; VOLT plays bass/drum accompaniment',
+                  'No player attack below the original full-mix strength floor',
+                  'Erect and Nightmare preserve the complete Hard core pattern',
                   'Both characters participate in every musical section']}
 (ROOT/'analysis/validation.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))

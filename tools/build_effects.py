@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
-from musical_chart import sections
+from musical_chart import sections, TIMING_OFFSET_MS
 
 ROOT=Path(__file__).resolve().parents[1]
 MOD=ROOT/'mods/energize'
@@ -44,7 +44,7 @@ def build_effects():
         values=np.convolve(values,np.ones(7)/7,mode='same')
         normalized.append(np.interp(sample_t,t,values))
     frames=np.round(np.array(normalized).T,3).tolist()
-    offset=json.loads((ROOT/'analysis/parts.json').read_text())['offset_ms']
+    offset=TIMING_OFFSET_MS
     (MOD/'data/energize-reactivity.json').write_text(json.dumps({'sampleMs':40,'offsetMs':offset,
         'channels':['bass','lead','drums','level'],'sections':sections(offset),'frames':frames},separators=(',',':')))
     props=[]

@@ -1,0 +1,48 @@
+{
+  "version": "1.3.0",
+  "reference_commit": "3d1aa1c",
+  "reference_sha256": "0af8551f1092107405e66889076bf371855fc620e924309c4a32aa7c6f66534a",
+  "original_audio_and_visual_files_unchanged": [
+    "data/characters/volt.json",
+    "data/stages/dynamo.json",
+    "images/characters/volt.png",
+    "images/characters/volt.xml",
+    "images/icons/icon-volt.png",
+    "images/stages/dynamo.png",
+    "images/freeplay/icons/voltpixel.png",
+    "images/stages/dynamo-fx/beam.png",
+    "images/stages/dynamo-fx/bolt.png",
+    "images/stages/dynamo-fx/core.png",
+    "images/stages/dynamo-fx/ring.png",
+    "images/storymenu/titles/energize.png",
+    "scripts/stages/dynamo.hxc",
+    "songs/energize/Inst.ogg"
+  ],
+  "original_rhythm_preservation": {
+    "easy": {
+      "expected": 432,
+      "retained_on_player": 432,
+      "changed_timestamps": 0
+    },
+    "normal": {
+      "expected": 796,
+      "retained_on_player": 796,
+      "changed_timestamps": 0
+    },
+    "hard": {
+      "expected": 1004,
+      "retained_on_player": 1004,
+      "changed_timestamps": 0
+    },
+    "erect": {
+      "expected": 1004,
+      "retained_on_player": 1004,
+      "changed_timestamps": 0
+    },
+    "nightmare": {
+      "expected": 1004,
+      "retained_on_player": 1004,
+      "changed_timestamps": 0
+    }
+  }
+}

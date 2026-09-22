@@ -1,4 +1,4 @@
-# ENERGIZE: VS VOLT — 1.2
+# ENERGIZE: VS VOLT — 1.3
 
 A native Friday Night Funkin’ **0.8.4** level using the supplied **Energize — Tonytonychopper999** recording.
 
@@ -14,21 +14,23 @@ Your normal controls, health, scoring, holds, and game-over mechanics apply. The
 
 ## The musical duet
 
-Boyfriend carries the lead during drops. VOLT carries the easier lead and quieter synth interludes while you play bass and drum accents. During your lead, VOLT supplies the backing part. Roles change at musical section boundaries, with a sustained player lead through the final overload; there is no repeating three-second handoff.
+Boyfriend now plays the prominent rhythm throughout the song, including the opening and quieter interludes. VOLT plays a separate, lighter bass/drum accompaniment. The lead no longer changes character at section boundaries.
 
-The chart uses separate estimates of lead, bass, and drums, created locally from the supplied recording with Demucs. Dominant pitch movement guides arrow direction. Strong simultaneous lead and drum attacks produce measured doubles on the harder charts. Holds require a stable pitched tail and enough space before the next note.
+Version 1.3 uses the original version you preferred as its reference. Every original foreground timestamp from both characters is retained on Boyfriend. Hard keeps the complete original Hard rhythm; Erect and Nightmare preserve that core and add mix-audible attacks and shared drum accents. This avoids treating a separated file labelled “lead” as automatically being the tune you would hum.
 
-| Difficulty | Player notes | Peak notes in one second | Holds | Doubles | Scroll speed |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Easy | 276 | 3 | 29 | 0 | 1.5 |
-| Normal | 578 | 6 | 33 | 0 | 2.1 |
-| Hard | 810 | 10 | 26 | 43 | 2.6 |
-| Erect | 1,049 | 13 | 19 | 70 | 2.9 |
-| Nightmare | 1,416 | 14 | 11 | 139 | 3.2 |
+| Difficulty | Player notes | Peak notes in one second | Doubles | Scroll speed |
+| --- | ---: | ---: | ---: | ---: |
+| Easy | 432 | 3 | 0 | 1.5 |
+| Normal | 796 | 6 | 0 | 2.0 |
+| Hard | 1,004 | 9 | 0 | 2.5 |
+| Erect | 1,114 | 11 | 44 | 2.8 |
+| Nightmare | 1,308 | 13 | 111 | 3.1 |
 
-The tempo remains **160 BPM**. The new grid phase is **36.25 ms**, measured from separated drum attacks. Notes follow that stable grid instead of inheriting fluctuating peaks from the full mix. Estimated attacks must fall within 33 ms of their chart timestamps. This is audio-assisted arrangement, not studio MIDI or a claim of perfect transcription. Hardware latency still uses the game’s normal calibration.
+Because Boyfriend now keeps the main rhythm, there are more continuous player phrases than in the original call-and-response chart. Original Easy and Normal holds are retained. Hard has the original tap patterns; advanced difficulty comes from extra supported attacks and measured two-key accents.
 
-The complete **187.5708-second** recording remains unchanged from the previous mod audio: no trimming, stretching, or replacement music. Estimated stems are development inputs only and are not included in the playable mod. Missing notes affects health and score but cannot mute individual instruments inside the supplied full mix.
+The tempo remains **160 BPM**, with the original **34 ms** grid reference. Actual notes retain the original acoustic attack timestamps rather than being forced onto the grid. No new global audio offset is applied. Hardware latency still uses the game’s normal calibration.
+
+The complete **187.5708-second** recording is unchanged: no trimming, stretching, or replacement music. Estimated stems are used for VOLT’s accompaniment and the visual envelopes only. Missing notes affects health and score but cannot mute individual instruments inside the supplied full mix.
 
 ## Stage and characters
 
@@ -38,9 +40,11 @@ Effects remain behind the characters and the native note interface. The game’s
 
 ## Verification
 
-All five charts pass audio identity, asset, timing-evidence, difficulty progression, note spacing, sustain collision, and musical-role checks. Every section gives both characters a part. Every drop assigns its lead to the player. See `analysis/validation.json`, `analysis/chart-report.json`, and `analysis/note-provenance.json`.
+All five charts pass audio identity, asset, note spacing, sustain collision, and difficulty progression checks. Regression checks confirm that every original foreground attack and hold stays on Boyfriend at its exact timestamp. Erect and Nightmare retain the complete Hard core pattern. Original music, art, character definitions, stage geometry, and stage script are unchanged.
 
-Native playtest details are recorded separately in `analysis/native-playtest-v12.json`. Bot play is used only for developer testing. The user’s earlier “Timing feels good” feedback applies to version 1.0, not this rebuilt arrangement.
+See `analysis/validation.json`, `analysis/v13-regression.json`, and `analysis/chart-report.json`. `analysis/v13-diagnosis.json` records the previous mismatch: on Hard, 127 stronger original attacks appeared only on VOLT while 84 player notes fell below the original mix-strength floor.
+
+Native test observations are recorded in `analysis/native-playtest-v13.json`. Bot play verifies integration, not whether the rhythm feels natural to a human. The earlier “Timing feels good” feedback belongs to the original chart; version 1.3 still needs your subjective playtest.
 
 ## Install or edit
 
@@ -56,7 +60,7 @@ The installer backs up an existing ENERGIZE mod under `backups` and preserves ba
 - `dist/energize.fnfc`: editable native chart archive. Keep the mod installed for VOLT and the stage.
 - `tools/separate_audio.py`: local four-stem estimation.
 - `tools/analyze_parts.py`: distinct attack streams and pitch estimates.
-- `tools/musical_chart.py`: authored section roles, difficulty patterns, and note provenance.
+- `tools/musical_chart.py`: original rhythm preservation, accompaniment, advanced accents, and note provenance.
 - `tools/build_effects.py`: procedural effect geometry and separate audio envelopes.
 - `tools/build_mod.py`: rebuilds the mod’s data and artwork metadata.
 - `tools/validate_mod.py`: chart, asset, and audio checks.
@@ -64,9 +68,11 @@ The installer backs up an existing ENERGIZE mod under `backups` and preserves ba
 
 ## Rebuild
 
-Development requires Python 3.12, FFmpeg on PATH, and the packages in `tools/requirements-audio.txt`. The isolated `.audio-venv` is already installed on this machine. Model downloads and estimated WAV stems stay under ignored `analysis` folders. Players do not need these tools.
+Development requires Python 3.12, FFmpeg on PATH, and the packages in `tools/requirements-audio.txt`. The isolated `.audio-venv` is already installed on this machine. The full-mix features in `analysis/features.npz` and original chart snapshot in `analysis/reference-v1-chart.json` are also required. Model downloads and estimated WAV stems stay under ignored `analysis` folders. Players do not need these tools.
 
 ```powershell
+ffmpeg -y -i mods/energize/songs/energize/Inst.ogg -ac 1 -ar 22050 -c:a pcm_s16le analysis/energize.wav
+.\.audio-venv\Scripts\python.exe tools\analyze_audio.py
 .\.audio-venv\Scripts\python.exe tools\separate_audio.py
 .\.audio-venv\Scripts\python.exe tools\analyze_parts.py
 .\.audio-venv\Scripts\python.exe tools\build_mod.py

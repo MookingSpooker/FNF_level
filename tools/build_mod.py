@@ -6,13 +6,13 @@ import xml.etree.ElementTree as ET
 from copy import deepcopy
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
-from musical_chart import build_charts
+from musical_chart import build_charts, TIMING_OFFSET_MS
 from build_effects import build_effects
 
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'mods/energize'
 BPM, BEAT = 160, 0.375
-OFFSET = json.loads((ROOT/'analysis/parts.json').read_text())['offset_ms']/1000
+OFFSET = TIMING_OFFSET_MS/1000
 
 def write_json(path, obj):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -91,7 +91,7 @@ def static_data():
         'id':'energize-volt','title':'ENERGIZE: VS VOLT','description':'Battle VOLT at The Dynamo. A musical duet across five difficulties, with a reactive reactor and character effects. Music by Tonytonychopper999.',
         'contributors':[{'name':'Tonytonychopper999','role':'Music (user-supplied track)'},
                         {'name':'Leane + Codex','role':'Mod concept, chart, integration and artwork'}],
-        'api_version':'0.8.4','mod_version':'1.2.0','license':'See CREDITS.md'})
+        'api_version':'0.8.4','mod_version':'1.3.0','license':'See CREDITS.md'})
     animations=[{'name':name,'prefix':prefix,'frameRate':24,'looped':False}
                 for name,prefix in [('idle','idle'),('danceLeft','idle'),('danceRight','cheer'),
                                     ('singLEFT','left'),('singDOWN','down'),('singUP','up'),('singRIGHT','right'),('cheer','cheer')]]
@@ -116,7 +116,7 @@ def static_data():
                                 {'name':'confirm','prefix':'confirm0','frameRate':24}]}]})
     metadata={
         'version':'2.2.4','songName':'Energize','artist':'Tonytonychopper999','charter':'Leane + Codex',
-        'timeFormat':'ms','offsets':{'instrumental':0},'generatedBy':'ENERGIZE chart builder 1.2',
+        'timeFormat':'ms','offsets':{'instrumental':0},'generatedBy':'ENERGIZE chart builder 1.3',
         'timeChanges':[{'t':0,'b':0,'bpm':BPM,'n':4,'d':4,'bt':[4,4,4,4]},
                        {'t':OFFSET*1000,'b':0,'bpm':BPM,'n':4,'d':4,'bt':[4,4,4,4]}],
         'playData':{'songVariations':['erect'],'difficulties':['easy','normal','hard'],

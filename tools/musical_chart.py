@@ -1,4 +1,4 @@
-"""Arrange the two characters as a duet, with section-based musical ownership."""
+"""Keep the familiar foreground rhythm on Boyfriend and give VOLT accompaniment."""
 from collections import Counter
 from pathlib import Path
 import json
@@ -7,19 +7,19 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT/'mods/energize'
 DIFFICULTIES = ['easy', 'normal', 'hard', 'erect', 'nightmare']
-# Beat boundaries follow changes in the arrangement, including the two quieter
-# synth interludes. Lead ownership never alternates on a repeating timer.
+TIMING_OFFSET_MS = 34.0
+# These boundaries control camera and lighting energy, never lead ownership.
 SECTIONS = [
-    ('Opening', 4, 52, 1, False), ('Charge I', 52, 68, 1, False),
-    ('Drop I', 68, 100, 0, True), ('Synth interlude I', 100, 132, 1, False),
-    ('Drop I climax', 132, 196, 0, True), ('Breath', 196, 208, 1, False),
-    ('Reprise', 208, 260, 1, False), ('Charge II', 260, 276, 1, False),
-    ('Drop II', 276, 308, 0, True), ('Synth interlude II', 308, 340, 1, False),
-    ('Final overload', 340, 476, 0, True)]
+    ('Opening', 4, 52, False), ('Charge I', 52, 68, False),
+    ('Drop I', 68, 100, True), ('Synth interlude I', 100, 132, False),
+    ('Drop I climax', 132, 196, True), ('Breath', 196, 208, False),
+    ('Reprise', 208, 260, False), ('Charge II', 260, 276, False),
+    ('Drop II', 276, 308, True), ('Synth interlude II', 308, 340, False),
+    ('Final overload', 340, 476, True)]
 
-def sections(offset):
-    return [{'name':name, 'start':round(offset+a*375,3), 'end':round(offset+b*375,3),
-             'leadSide':side, 'drop':drop} for name,a,b,side,drop in SECTIONS]
+def sections(offset=TIMING_OFFSET_MS):
+    return [{'name':name, 'start':offset+a*375, 'end':offset+b*375,
+             'leadSide':0, 'drop':drop} for name,a,b,drop in SECTIONS]
 
 def write(path, value):
     path.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8')
@@ -32,117 +32,122 @@ def chart_stats(notes):
         'holds':sum(n['l']>0 for n in player),
         'peak_player_notes_in_1s':max(sum(n['t']<=x['t']<n['t']+1000 for x in player) for n in player)}
 
+def mix_attacks():
+    """Use the exact detector and timestamps of the user-preferred original."""
+    z=np.load(ROOT/'analysis/features.npz')
+    times,strength,rms=z['times'],z['onset'],z['rms']
+    peaks=np.where((strength>np.roll(strength,1))&(strength>=np.roll(strength,-1)))[0]
+    candidates=[]
+    for step in range(16,1904):
+        grid=(TIMING_OFFSET_MS+step*93.75)/1000
+        near=peaks[np.abs(times[peaks]-grid)<.036]
+        if not len(near):continue
+        p=max(near,key=lambda p:strength[p]*np.exp(-((times[p]-grid)/.035)**2))
+        if strength[p]<.2 or rms[p]<.045:continue
+        time=round(float(times[p]-.006)*1000,3)
+        if 76600<time<78000 or time>178600:continue
+        candidates.append({'t':time,'step':step,'power':float(strength[p]),
+            'peak':round(float(times[p])*1000,3),'grid':round(grid*1000,3)})
+    return candidates
+
+def available_lane(notes, time, preferred, side=0, length=0):
+    for lane in [preferred,(preferred+2)%4,(preferred+1)%4,(preferred+3)%4]:
+        data=lane+side*4
+        if not any(n['d']==data and (abs(n['t']-time)<145 or
+            n['t']<=time<=n['t']+n['l'] or time<=n['t']<=time+length) for n in notes):
+            return data
+    return None
+
 def build_charts():
+    reference=json.loads((ROOT/'analysis/reference-v1-chart.json').read_text())['notes']
     analysis=json.loads((ROOT/'analysis/parts.json').read_text())
-    offset=analysis['offset_ms']; arrangement=sections(offset)
-    features=np.load(ROOT/'analysis/parts-features.npz')
-    charts={}; evidence={}; provenance={}
-    lead_by_step={a['step']:a for a in analysis['parts']['lead']}
-    bass_by_step={a['step']:a for a in analysis['parts']['bass']}
-    drums_by_step={a['step']:a for a in analysis['parts']['drums']}
+    attacks=mix_attacks(); by_time={a['t']:a for a in attacks}
+    drums={a['step']:a for a in analysis['parts']['drums']}
+    arrangement=sections();charts={};evidence={};provenance={}
     for rank,difficulty in enumerate(DIFFICULTIES):
-        notes=[]; proof=[]; last_time=[-9999,-9999]; last_lane=[-1,-1]
-        last_pitch=[60,60]; lane_times=[-9999]*8
-        for s in range(16,1904):
-            time=round(offset+s*93.75,3)
-            section=next((a for a in arrangement if a['start']<=time<a['end']),None)
-            if section is None or 76600<time<78000:continue
-            for side in [0,1]:
-                is_lead=side==section['leadSide']; drop=section['drop']
-                part='lead' if is_lead else 'bass'
-                candidate=(lead_by_step if is_lead else bass_by_step).get(s)
-                drum=drums_by_step.get(s)
-                # The backing part is bass-led. Strong drum accents fill its gaps;
-                # neither character borrows the other character's lead stream.
-                if not is_lead and drum and (candidate is None or
-                        (s%4==0 and drum['strength']>candidate['strength']*1.6)):
-                    candidate=drum; part='drums'
-                if candidate is None:continue
-                strength=candidate['strength']
-                if is_lead:
-                    threshold=[.60,.56,.48,.34,.22][rank]
-                    keep=(s%4==0 or (rank>=1 and s%2==0) or
-                        (rank>=2 and strength>[1.15,.82,.48][rank-2]))
-                else:
-                    threshold=[.48,.40,.34,.28,.22][rank]
-                    keep=(s%4==0 or (rank>=1 and s%8==6 and strength>.5) or
-                        (rank>=2 and s%2==0) or (rank>=3 and strength>[1.1,.65][rank-3]))
-                if not keep or strength<threshold:continue
-                if time-last_time[side]<[280,180,90,90,90][rank]:continue
-                pitch=candidate.get('pitch',last_pitch[side])
-                if not 35<pitch<96:pitch=last_pitch[side]
-                # Four pitch registers preserve melodic contour. Repeated fast
-                # pitches alternate fingers instead of producing awkward jacks.
-                if is_lead:
-                    lane=int(np.searchsorted([51,59,67],pitch))
-                    if lane==last_lane[side] and time-last_time[side]<280:
-                        lane=(lane+(1 if pitch>=last_pitch[side] else -1))%4
-                else:
-                    lane=[0,2,1,3][(s//2)%4] if part=='drums' else [0,1,3,2][int(round(pitch))%4]
-                    if lane==last_lane[side] and time-last_time[side]<280:lane=(lane+2)%4
-                lane=next((x for x in [lane,(lane+2)%4,(lane+1)%4,(lane+3)%4]
-                    if time-lane_times[x+side*4]>=180),None)
-                if lane is None:continue
-                note={'t':time,'d':lane+side*4,'l':0}
-                notes.append(note);lane_times[note['d']]=time
-                proof.append({'t':time,'d':note['d'],'part':part,'section':section['name'],
-                    'attack':candidate['attack'],'deviation_ms':candidate['deviation_ms'],
-                    'pitch':candidate.get('pitch'),'strength':strength})
-                last_time[side]=time;last_lane[side]=lane;last_pitch[side]=pitch
-                # Doubles denote a simultaneous lead + strong drum accent, never
-                # arbitrary density. Erect and Nightmare increase accent coverage.
-                accent=rank>=2 and is_lead and drop and drum and drum['strength']>.65 and (
-                    (rank==2 and s%16==0) or (rank==3 and s%8==0) or (rank==4 and s%4==0))
-                if accent:
-                    second=next((x for x in [(lane+2)%4,(lane+1)%4,(lane+3)%4]
-                        if time-lane_times[x+side*4]>=180),None)
-                    if second is not None:
-                        data=second+side*4
-                        notes.append({'t':time,'d':data,'l':0});lane_times[data]=time
-                        proof.append({'t':time,'d':data,'part':'drums','section':section['name'],
-                            'attack':drum['attack'],'deviation_ms':drum['deviation_ms'],
-                            'pitch':None,'strength':drum['strength']})
-        notes.sort(key=lambda n:(n['t'],n['d']))
-        # Sustains require a stable pitched tail and a real rest on that side.
-        lookup={(a['t'],a['d']):a for a in proof}
-        for side in [0,1]:
-            own=[n for n in notes if n['d']//4==side]
-            for i,n in enumerate(own[:-1]):
-                info=lookup[(n['t'],n['d'])];part=info['part'];gap=own[i+1]['t']-n['t']
-                if gap<460 or part=='drums':continue
-                tail=min(562.5,gap-150)
-                mask=(features['times']*1000>=n['t']+80)&(features['times']*1000<n['t']+tail)
-                if not mask.any():continue
-                pitch=features[part+'_pitch'][mask];energy=features[part+'_rms'][mask]
-                if np.median(energy)>.16 and np.percentile(pitch,80)-np.percentile(pitch,20)<1.5:
-                    n['l']=round(tail,3)
+        baseline=reference[difficulty if rank<3 else 'hard']
+        notes=[];proof=[]
+        # Transfer both original characters' foreground phrases to the player.
+        # Keep every original timestamp and sustain; only resolve lane conflicts.
+        for old in baseline:
+            a=by_time[old['t']]
+            data=available_lane(notes,old['t'],old['d']%4,length=old['l'])
+            assert data is not None, 'An original foreground attack would be lost'
+            notes.append({'t':old['t'],'d':data,'l':old['l']})
+            proof.append({'t':old['t'],'d':data,'role':'foreground','part':'full_mix',
+                'source':'original','power':a['power'],'step':a['step'],'attack':old['t']})
+        # Advanced charts retain the exact Hard rhythm. Extra attacks must be
+        # audible in the mix; per-stem normalization cannot promote quiet texture.
+        if rank>=3:
+            threshold=.40 if rank==3 else .32
+            for a in sorted(attacks,key=lambda a:-a['power']):
+                if a['power']<threshold or any(abs(n['t']-a['t'])<78 for n in notes):continue
+                preferred=[0,2,1,3,2,0,3,1][a['step']%8]
+                data=available_lane(notes,a['t'],preferred)
+                if data is None:continue
+                notes.append({'t':a['t'],'d':data,'l':0})
+                proof.append({'t':a['t'],'d':data,'role':'foreground','part':'full_mix',
+                    'source':'extra','power':a['power'],'step':a['step'],'attack':a['t']})
+            # Doubles emphasize existing strong hits, preserving the melody rhythm.
+            last_chord=-9999
+            for n in sorted(notes.copy(),key=lambda n:n['t']):
+                a=by_time[n['t']];drum=drums.get(a['step'])
+                spacing=750 if rank==3 else 375
+                if (n['t']-last_chord<spacing or a['power']<(.95 if rank==3 else .75)
+                    or not drum or drum['strength']<.75 or abs(drum['attack']-n['t'])>32):continue
+                data=available_lane(notes,n['t'],(n['d']+2)%4)
+                if data is None:continue
+                notes.append({'t':n['t'],'d':data,'l':0});last_chord=n['t']
+                proof.append({'t':n['t'],'d':data,'role':'accent','part':'drums',
+                    'source':'accent','power':a['power'],'step':a['step'],'attack':drum['attack']})
+        player_times=sorted(set(n['t'] for n in notes))
+        # VOLT follows a sparse bass/drum backing line throughout. Shared accents
+        # align with the foreground hit; intervening notes retain their own onset.
+        backing={}
+        for part in ['bass','drums']:
+            for a in analysis['parts'][part]:
+                s=a['step']
+                if s%4!=0 and not (rank>=1 and s%2==0 and a['strength']>.8):continue
+                if a['strength']<.45 or a['energy']<.18:continue
+                priority=a['strength']*(1.3 if part=='drums' and s%4==0 else 1)
+                if s not in backing or priority>backing[s][0]:backing[s]=(priority,part,a)
+        last=-9999;index=0
+        for _,part,a in sorted(backing.values(),key=lambda x:x[2]['attack']):
+            time=a['attack']
+            nearest=min(player_times,key=lambda t:abs(t-time))
+            if abs(nearest-time)<32:time=nearest
+            if time<1530 or 76600<time<78000 or time>178600:continue
+            if time-last<([260,165,145,145,145][rank]):continue
+            data=available_lane(notes,time,[0,2,1,3][index%4],side=1)
+            if data is None:continue
+            notes.append({'t':time,'d':data,'l':0});last=time;index+=1
+            proof.append({'t':time,'d':data,'role':'backing','part':part,
+                'source':'stem','step':a['step'],'attack':a['attack'],'strength':a['strength']})
+        notes.sort(key=lambda n:(n['t'],n['d']));proof.sort(key=lambda n:(n['t'],n['d']))
         charts[difficulty]=notes;provenance[difficulty]=proof
         stats=chart_stats(notes)
-        stats['parts']=dict(Counter(a['part'] for a in proof if a['d']<4))
-        stats['sections']=[{'name':section['name'],'player_role':'lead' if section['leadSide']==0 else 'backing',
-            'player_notes':sum(section['start']<=n['t']<section['end'] and n['d']<4 for n in notes),
-            'opponent_notes':sum(section['start']<=n['t']<section['end'] and n['d']>=4 for n in notes)} for section in arrangement]
+        stats['original_foreground_attacks_retained']=len(baseline)
+        stats['player_roles']=dict(Counter(a['role'] for a in proof if a['d']<4))
+        stats['sections']=[{'name':s['name'],'player_role':'foreground',
+            'player_notes':sum(s['start']-40<=n['t']<s['end']-40 and n['d']<4 for n in notes),
+            'opponent_notes':sum(s['start']-40<=n['t']<s['end']-40 and n['d']>=4 for n in notes)} for s in arrangement]
         evidence[difficulty]=stats
     events=[{'t':0,'e':'FocusCamera','v':{'char':-1,'x':690,'y':530,'duration':0,'ease':'INSTANT'}}]
-    for section in arrangement:
+    for s in arrangement:
         events.extend([
-            {'t':section['start'],'e':'FocusCamera','v':{'char':-1,'x':715 if section['leadSide']==0 else 660,
-                'y':530,'duration':8,'ease':'sineInOut'}},
-            {'t':section['start'],'e':'ZoomCamera','v':{'zoom':.76 if section['drop'] else .8,
+            {'t':s['start'],'e':'FocusCamera','v':{'char':-1,'x':715,'y':530,'duration':8,'ease':'sineInOut'}},
+            {'t':s['start'],'e':'ZoomCamera','v':{'zoom':.76 if s['drop'] else .8,
                 'duration':8,'mode':'direct','ease':'sine','easeDir':'InOut'}}])
     events.append({'t':179000,'e':'PlayAnimation','v':{'target':'dad','anim':'cheer','force':True}})
     events.sort(key=lambda e:e['t'])
-    for suffix,diffs,speeds in [('',DIFFICULTIES[:3],[1.5,2.1,2.6]),('-erect',DIFFICULTIES[3:],[2.9,3.2])]:
-        write(MOD/f'data/songs/energize/energize-chart{suffix}.json', {'version':'2.0.0',
-            'scrollSpeed':dict(zip(diffs,speeds)), 'events':events, 'notes':{d:charts[d] for d in diffs},
-            'generatedBy':'ENERGIZE musical arrangement 1.2'})
+    for suffix,diffs,speeds in [('',DIFFICULTIES[:3],[1.5,2.0,2.5]),('-erect',DIFFICULTIES[3:],[2.8,3.1])]:
+        write(MOD/f'data/songs/energize/energize-chart{suffix}.json',{'version':'2.0.0',
+            'scrollSpeed':dict(zip(diffs,speeds)),'events':events,'notes':{d:charts[d] for d in diffs},
+            'generatedBy':'ENERGIZE foreground arrangement 1.3'})
     write(ROOT/'analysis/note-provenance.json',provenance)
-    deviations=[abs(a['deviation_ms']) for a in provenance['nightmare']]
-    report={'bpm':160,'grid_offset_ms':offset,'duration_seconds':187.570794,
-        'method':analysis['method'],'sections':arrangement,'difficulties':evidence,
-        'attack_grid_deviation_median_ms':float(np.median(deviations)),
-        'attack_grid_deviation_p95_ms':float(np.percentile(deviations,95)),
-        'attack_grid_deviation_max_ms':max(deviations),
-        'timing_note':'This measures agreement with estimated stem attacks, not perceptual timing accuracy. Full-mix playback is unchanged.'}
-    write(ROOT/'analysis/chart-report.json',report)
+    write(ROOT/'analysis/chart-report.json',{'version':'1.3.0','bpm':160,
+        'grid_offset_ms':TIMING_OFFSET_MS,'duration_seconds':187.570794,
+        'reference_commit':'3d1aa1c','sections':arrangement,'difficulties':evidence,
+        'method':'Original full-mix foreground rhythm retained on Boyfriend for the entire song; sparse separated bass/drum accompaniment on VOLT. Advanced charts preserve Hard and add mix-audible attacks and strong shared accents.',
+        'timing_note':'Original attack timestamps are preserved exactly; neither a new global shift nor forced grid quantization is applied. Perceptual feel still needs human playtesting.'})
     print(json.dumps({d:{k:v for k,v in evidence[d].items() if k!='sections'} for d in DIFFICULTIES},indent=2))

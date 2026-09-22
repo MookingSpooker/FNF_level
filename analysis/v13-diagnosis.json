@@ -1,0 +1,55 @@
+{
+  "original_hard_notes_both_sides": 1004,
+  "prominent_original_attacks": 477,
+  "comparison": {
+    "hard": {
+      "player_notes": 810,
+      "prominent_attacks_only_on_volt": 127,
+      "player_notes_below_original_minimum_mix_strength": 84,
+      "examples_seconds": [
+        4.53,
+        4.71,
+        6.97,
+        8.1,
+        9.22,
+        10.53,
+        12.6,
+        12.79
+      ]
+    },
+    "erect": {
+      "player_notes": 1049,
+      "prominent_attacks_only_on_volt": 125,
+      "player_notes_below_original_minimum_mix_strength": 126,
+      "examples_seconds": [
+        4.53,
+        6.97,
+        9.22,
+        10.53,
+        10.81,
+        12.6,
+        12.79,
+        13.17
+      ]
+    },
+    "nightmare": {
+      "player_notes": 1416,
+      "prominent_attacks_only_on_volt": 118,
+      "player_notes_below_original_minimum_mix_strength": 270,
+      "examples_seconds": [
+        4.53,
+        5.75,
+        6.97,
+        9.22,
+        10.53,
+        10.81,
+        12.79,
+        13.17
+      ]
+    }
+  },
+  "comparison_version": "1.2.0",
+  "reference_version": "1.0.0",
+  "prominence_proxy": "Original full-mix attack strength above 0.65; this is a signal-based proxy, not a perceptual listening judgment.",
+  "weak_attack_definition": "Mix attack strength below 0.23, the original Hard eighth-note floor."
+}

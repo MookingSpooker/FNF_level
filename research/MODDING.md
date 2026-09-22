@@ -53,3 +53,15 @@ Default metadata registers Easy, Normal, and Hard plus the `erect` variation. Th
 The visual envelope samples separated bass, lead, drums, and combined level every 40 ms. The stage samples the current song position with interpolation. Lighting intensity and lead-side halos follow the same section map as the charts. Native note-hit callbacks add character lean and halo accents. Repeated character scaling was removed after native testing exposed global-offset accumulation in Boyfriend’s renderer.
 
 All new effect props render below character z-order. The native Flashing Lights preference reduces effect brightness and disables lightning and sharp beat pulses. The stage does not enable bot play, change note timing, or modify scoring.
+
+## Foreground rhythm correction (1.3)
+
+User feedback overrides the earlier assumption that the separated “other + vocals” signal always represents the perceived lead. The player preferred the original chart and wants the sound a listener would hum, with VOLT on accompaniment even in quieter sections.
+
+Comparison with original commit `3d1aa1c` found 127 stronger original Hard attacks assigned only to VOLT in version 1.2. It also found 84 Hard player notes below the original full-mix strength floor. Stem normalization and forced role switching were therefore a poor guide to perceptual prominence; passing a grid-distance check did not validate musical feel.
+
+The correction preserves every original foreground attack, including the opponent’s former main phrases, on Boyfriend with no timestamp shift. Original lane motifs and holds are retained wherever lane spacing allows. Advanced charts preserve the complete Hard core and add only audible full-mix attacks, with doubles supported by strong drum accents. VOLT gets sparse separated bass/drum accompaniment. This is a conservative, feedback-based approximation of the foreground, not a claim of automatic hummable-melody transcription.
+
+The original grid reference is 34 ms, but notes retain acoustic timestamps rather than being forcibly quantized. Existing art, audio, stage geometry and script are unchanged. The section table now keeps Boyfriend as the foreground owner throughout; it still drives changes in visual intensity.
+
+`analysis/reference-v1-chart.json` stores the original chart so rebuilding does not require Git history. Regression checks lock the original timestamps onto the player and prevent Erect/Nightmare from replacing the Hard core with unrelated rhythms. A native playtest can verify playback and rendering; the user remains the judge of musical feel.
