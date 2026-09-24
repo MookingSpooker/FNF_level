@@ -65,3 +65,13 @@ The correction preserves every original foreground attack, including the opponen
 The original grid reference is 34 ms, but notes retain acoustic timestamps rather than being forcibly quantized. Existing art, audio, stage geometry and script are unchanged. The section table now keeps Boyfriend as the foreground owner throughout; it still drives changes in visual intensity.
 
 `analysis/reference-v1-chart.json` stores the original chart so rebuilding does not require Git history. Regression checks lock the original timestamps onto the player and prevent Erect/Nightmare from replacing the Hard core with unrelated rhythms. A native playtest can verify playback and rendering; the user remains the judge of musical feel.
+
+## Instrumental-only phrases (1.4)
+
+The latest request explicitly excludes vocal phrasing and permits instrumental synth melodies. Version 1.3’s preservation of full-mix attacks conflicts with that requirement, so its reference-chart and full-mix constraints are superseded. The new analyzer reads only `other.wav`, `bass.wav`, and `drums.wav`. It never merges vocals into the synth evidence. Source separation is imperfect, so authored rhythmic masks restrict which attacks may become notes.
+
+Normalized waveform correlation places the September 24 clip at 25.212 seconds, with the matching reprise 78 seconds later. The September 22 clip begins at 37.624 seconds. The musical riff boundaries are 25.534–37.534 and 103.534–115.534; the following streams span 37.534–49.534 and 115.534–127.534. Both follow six attacks per bar, at sixteenth-step offsets 0, 3, 6, 9, 12, and 14. Hard and above use doubles throughout each riff, with chord pairs changing every two bars. Streams use single notes with a recurring anchor.
+
+The installed official `assets/data/songs/milf/milf-chart.json` supplies a local reference for alternating anchors and recurring directional motifs. Its note timestamps are not copied. ENERGIZE’s own synth rhythm determines the timing and density. The original 160 BPM/34 ms grid keeps phrases consistent; each authored hit must also have separate instrumental evidence within 35 ms. No global audio delay is changed.
+
+Regression checks independently verify the complete six-hit motifs, both repeated passages, every riff double, and Hard-core preservation in advanced charts. Short FNFC practice archives trim only copies of the music, preserve sample alignment, and shift chart notes by the same amount. They use the standard stage so the main stage’s song-position envelopes are not played against a shifted clock. The full installed song and visuals remain unchanged.

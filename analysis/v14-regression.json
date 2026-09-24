@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "installed_files_match": true,
+  "archive_matches": true,
+  "audio_art_character_stage_unchanged": true,
+  "changed_mod_files": [
+    "mods/energize/_polymod_meta.json",
+    "mods/energize/data/songs/energize/energize-chart-erect.json",
+    "mods/energize/data/songs/energize/energize-chart.json",
+    "mods/energize/data/songs/energize/energize-metadata-erect.json",
+    "mods/energize/data/songs/energize/energize-metadata.json"
+  ]
+}

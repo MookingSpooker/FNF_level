@@ -1,0 +1,65 @@
+{
+  "clip_duration_seconds": 13.6535,
+  "windows": [
+    {
+      "clip_window": 0.0,
+      "matches": [
+        {
+          "song_window": 25.212,
+          "implied_clip_start": 25.212,
+          "correlation": 0.972
+        },
+        {
+          "song_window": 103.212,
+          "implied_clip_start": 103.212,
+          "correlation": 0.769
+        },
+        {
+          "song_window": 34.212,
+          "implied_clip_start": 34.212,
+          "correlation": 0.334
+        }
+      ]
+    },
+    {
+      "clip_window": 4.327,
+      "matches": [
+        {
+          "song_window": 29.539,
+          "implied_clip_start": 25.212,
+          "correlation": 0.977
+        },
+        {
+          "song_window": 107.539,
+          "implied_clip_start": 103.212,
+          "correlation": 0.768
+        },
+        {
+          "song_window": 119.539,
+          "implied_clip_start": 115.212,
+          "correlation": 0.191
+        }
+      ]
+    },
+    {
+      "clip_window": 8.653,
+      "matches": [
+        {
+          "song_window": 33.866,
+          "implied_clip_start": 25.212,
+          "correlation": 0.846
+        },
+        {
+          "song_window": 111.866,
+          "implied_clip_start": 103.212,
+          "correlation": 0.664
+        },
+        {
+          "song_window": 102.866,
+          "implied_clip_start": 94.212,
+          "correlation": 0.368
+        }
+      ]
+    }
+  ]
+}

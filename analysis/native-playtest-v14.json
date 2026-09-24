@@ -1,0 +1,43 @@
+{
+  "version": "1.4.0",
+  "date": "2026-09-24",
+  "engine": "FNF 0.8.4",
+  "full_song": {
+    "difficulty": "nightmare",
+    "variation": "erect",
+    "bot_play": true,
+    "song_scripts": true,
+    "completed": true,
+    "returned_to_editor": true,
+    "observations": [
+      "Boyfriend, VOLT, and Girlfriend rendered throughout observed samples",
+      "Double arrows visible near 25 seconds",
+      "Later synth stream visible near 120 seconds",
+      "Reactive Dynamo effects remained active",
+      "Final cheer event executed",
+      "Sampled frame counter: 60 FPS"
+    ],
+    "stderr_empty": true,
+    "log": "analysis/native-v14.log"
+  },
+  "practice": {
+    "difficulty": "hard",
+    "manual_play": true,
+    "archive": "dist/energize-practice-first.fnfc",
+    "difficulty_menu_loaded": true,
+    "gameplay_started": true,
+    "stage": "mainStage",
+    "characters_loaded": true,
+    "completed": false,
+    "ending": "Normal game-over after no player input",
+    "stderr_empty": true,
+    "log": "analysis/native-v14-practice-fixed.log",
+    "resolved_issue": "Initial practice metadata used stage instead of native mainStage; corrected and retested."
+  },
+  "limits": [
+    "Bot play verifies integration, not human timing perception",
+    "Hard and Erect full songs were structurally validated, not separately played end to end",
+    "The second practice archive was checked structurally and by decoded audio, not launched separately"
+  ],
+  "cleanup": "Bot play was disabled before closing the editor; test game instances closed."
+}

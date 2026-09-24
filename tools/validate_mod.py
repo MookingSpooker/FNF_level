@@ -70,15 +70,12 @@ assert Image.open(MOD/'images/icons/icon-volt.png').size==(300,150)
 assert (MOD/'images'/f"{level['titleAsset']}.png").exists()
 for role in ['bf','gf']:
     assert (GAME/f'assets/data/characters/{role}.json').exists()
-parts=read(ROOT/'analysis/parts.json')
+parts=read(ROOT/'analysis/instrumental-parts.json')
 provenance=read(ROOT/'analysis/note-provenance.json')
 report=read(ROOT/'analysis/chart-report.json')
-reference=read(ROOT/'analysis/reference-v1-chart.json')['notes']
 part_attacks={name:{a['step']:a for a in values} for name,values in parts['parts'].items()}
-features=np.load(ROOT/'analysis/features.npz')
-strength=features['onset'];times=features['times']
-peaks=np.where((strength>np.roll(strength,1))&(strength>=np.roll(strength,-1)))[0]
-peak_times=np.round((times[peaks]-.006)*1000,3)
+assert set(parts['sources'])=={'synth','bass','drums'}
+assert parts['sources']['synth']=='other.wav'
 assert envelope['offsetMs']==report['grid_offset_ms']==meta['timeChanges'][1]['t']==34
 assert envelope['sections']==report['sections']
 assert all(s['leadSide']==0 for s in envelope['sections']), 'Foreground still switches away from Boyfriend'
@@ -104,26 +101,37 @@ for difficulty,notes in all_charts.items():
     errors=[]
     for n in notes:
         a=proof[(n['t'],n['d'])]
+        assert a['part'] in part_attacks and a['source']==parts['sources'][a['part']], 'Non-instrumental note evidence'
+        stem=part_attacks[a['part']][a['step']]
+        assert a['attack']==stem['attack'] and a['strength']==stem['strength']
+        errors.append(abs(n['t']-stem['attack']))
+        assert errors[-1]<35, 'Note has no nearby instrumental attack'
+        assert n['t']==34+a['step']*93.75, 'Rhythm drifts from its repeating grid'
         if n['d']<4:
-            assert a['role'] in ['foreground','accent'], 'Player still receives the backing role'
-            p=int(np.argmin(abs(peak_times-n['t'])))
-            errors.append(float(abs(peak_times[p]-n['t'])))
-            assert errors[-1]<.001,'Player attack differs from the original detector timeline'
-            assert strength[peaks[p]]>=.23,'Player receives a weak texture attack'
-            if a['role']=='accent':
-                stem=part_attacks['drums'][a['step']]
-                assert abs(stem['attack']-n['t'])<=32 and stem['strength']>=.75
-                assert any(x['t']==n['t'] and x['d']<4 and x['role']=='foreground' for x in proof.values()), 'Accent replaces the foreground'
+            assert a['role']=='foreground' and a['part'] in ['synth','drums']
         else:
             assert a['role']=='backing' and a['part'] in ['bass','drums'], 'VOLT steals a foreground phrase'
-            stem=part_attacks[a['part']][a['step']]
-            assert abs(n['t']-stem['attack'])<=32, 'Backing attack lost its audio evidence'
-    baseline=reference[difficulty if difficulty in reference else 'hard']
     player=[n for n in notes if n['d']<4]
-    assert all(any(n['t']==old['t'] and n['l']==old['l'] for n in player) for old in baseline), 'An original foreground attack or sustain was lost'
-    if difficulty in reference:
-        assert len(player)==len(baseline), 'Unexpected filler in a base difficulty'
-    else:
+    # Independently specify the requested rhythm and verify both repeated clips.
+    hits=(0,3,6,9,12,14)
+    pairs=((0,3),(1,2),(0,2),(1,3))
+    for phrase,starts in [('double-riff',(272,1104)),('synth-stream',(400,1232))]:
+        patterns=[]
+        for start in starts:
+            selected=[a for a in proof.values() if a['d']<4 and start<=a['step']<start+128]
+            expected={start+bar*16+offset for bar in range(8) for i,offset in enumerate(hits)
+                      if difficulty!='easy' or i in (0,2,4)}
+            assert {a['step'] for a in selected}==expected, 'Requested instrumental motif has gaps or filler'
+            assert all(a['phrase']==phrase and a['part']=='synth' for a in selected)
+            for step in expected:
+                lanes=sorted(a['d'] for a in selected if a['step']==step)
+                if phrase=='double-riff' and difficulty in ['hard','erect','nightmare']:
+                    assert lanes==sorted(pairs[((step-start)//32)%4]), 'Riff attack must be its authored double'
+                else:
+                    assert len(lanes)==1
+            patterns.append([(a['step']-start,a['d']) for a in selected])
+        assert patterns[0]==patterns[1], 'Repeated musical passage changes its lane pattern'
+    if difficulty in ['erect','nightmare']:
         assert all(n in player for n in all_charts['hard'] if n['d']<4), 'Advanced chart changes the core Hard pattern'
     section_checks=[]
     for section in report['sections']:
@@ -131,8 +139,7 @@ for difficulty,notes in all_charts.items():
         assert any(a['d']<4 for a in own) and any(a['d']>=4 for a in own), 'A section loses its duet'
         section_checks.append({'name':section['name'],'player_notes':sum(a['d']<4 for a in own),
             'opponent_notes':sum(a['d']>=4 for a in own)})
-    stats[difficulty]={'notes':len(notes),'original_foreground_attacks_retained':len(baseline),
-        'max_player_timestamp_rounding_error_ms':max(errors),'sections':section_checks}
+    stats[difficulty]={'notes':len(notes),'max_instrumental_attack_distance_ms':max(errors),'sections':section_checks}
 player_counts=[sum(n['d']<4 for n in all_charts[d]) for d in ['easy','normal','hard','erect','nightmare']]
 assert player_counts==sorted(set(player_counts)),'Difficulty progression is not strictly increasing'
 result={'status':'PASS','audio_correlation':audio_correlation,
@@ -142,9 +149,11 @@ result={'status':'PASS','audio_correlation':audio_correlation,
         'checks':['Exact supplied recording, unchanged length','All required assets resolve',
                   'All atlas rectangles in bounds','No duplicate or out-of-range notes',
                   'No sustain collisions or rapid same-lane repeats',
-                  'Original foreground timestamps and sustains retained exactly on Boyfriend',
+                  'All notes use instrumental evidence only; no vocal or full-mix positive source',
+                  'Every note lies on the stable grid within 35 ms of its instrumental attack',
+                  'Both 48-hit riffs use doubles on Hard, Erect, and Nightmare',
+                  'Both synth streams and riff reprises preserve their authored patterns',
                   'Player owns the foreground throughout; VOLT plays bass/drum accompaniment',
-                  'No player attack below the original full-mix strength floor',
                   'Erect and Nightmare preserve the complete Hard core pattern',
                   'Both characters participate in every musical section']}
 (ROOT/'analysis/validation.json').write_text(json.dumps(result,indent=2)+'\n')
